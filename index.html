@@ -1,0 +1,324 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NOREXA AI HEALTH DEMO</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ffff">
+
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+
+<style>
+html, body{
+  margin:0; padding:0; height:100%; width:100%;
+  background:black; color:white; font-family:Arial;
+  overflow:hidden;
+}
+
+/* VIDEO */
+#videoBG{
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  object-fit:cover; opacity:.25; z-index:0;
+}
+
+/* CLOCK */
+#clock{
+  position:fixed; top:10px; left:20px; font-size:32px;
+  background:rgba(0,0,0,.6); padding:10px 18px; border-radius:10px; z-index:9;
+}
+
+/* WEATHER */
+#weather{
+  position:fixed; top:10px; right:20px;
+  background:rgba(0,0,0,.6);
+  padding:10px 18px; border-radius:10px;
+  font-size:16px; line-height:1.5; z-index:9;
+}
+
+/* LOGO */
+#logoTicker{
+  position:fixed; top:0; left:0; width:100%; height:150px; overflow:hidden; z-index:10;
+}
+#logoTickerInner{
+  display:flex; white-space:nowrap; animation:scrollLogo 25s linear infinite;
+}
+#logoTickerInner img{ height:200px; margin-right:50px; }
+@keyframes scrollLogo{
+  0%{transform:translateX(100%);}
+  100%{transform:translateX(-100%);}
+}
+
+/* SLIDES */
+#slideArea{
+  position:absolute; top:0; left:0; width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; z-index:5;
+}
+.slide{ display:none; max-width:75%; font-size:40px; }
+.slide.active{ display:block; }
+.title{ font-family:'Russo One'; font-size:60px; color:#00ffff; }
+
+/* ADS */
+#adBox{
+  position:fixed; right:-50%; top:0; width:50%; height:100%;
+  transition:right .6s; z-index:8;
+}
+#adBox img{ width:100%; height:100%; object-fit:cover; }
+
+/* CONTROLS */
+#controls{
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center;
+  background:rgba(0,0,0,.8);
+  padding:15px; border-radius:20px; z-index:10;
+}
+.ctrl{
+  width:55px; height:55px; border:none; border-radius:50%;
+  margin:6px; background:#00ffff; color:black; cursor:pointer;
+}
+#soundBtn{
+  width:140px; height:55px; border:none; border-radius:12px;
+  background:#00ffff; font-weight:bold; cursor:pointer;
+}
+
+/* VIDEO SOUND BUTTON */
+#videoMuteBtn{
+  position:fixed;
+  bottom:160px;
+  left:20px;
+  z-index:999;
+  padding:12px 16px;
+  border:none;
+  border-radius:12px;
+  background:#00ffff;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* CHAT BUTTON */
+#chatBox{
+  position:fixed; bottom:150px; right:20px; z-index:20;
+}
+
+/* BANNER */
+#bannerTicker{
+  position:fixed; bottom:0; width:100%; height:60px;
+  background:black; display:flex; align-items:center;
+  overflow:hidden;
+}
+#bannerTickerInner{
+  white-space:nowrap;
+  font-family:'Russo One';
+  font-size:36px;
+  color:#00ffff;
+  animation:scrollBanner 45s linear infinite;
+}
+@keyframes scrollBanner{
+  0%{transform:translateX(100%);}
+  100%{transform:translateX(-100%);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGO -->
+<div id="logoTicker">
+  <div id="logoTickerInner">
+    <img src="https://i.imgur.com/KZlMkqV.png">
+    <img src="https://i.imgur.com/KZlMkqV.png">
+    <img src="https://i.imgur.com/KZlMkqV.png">
+  </div>
+</div>
+
+<div id="clock"></div>
+<div id="weather">Loading Weather...</div>
+
+<video id="videoBG" autoplay muted playsinline></video>
+
+<!-- VIDEO SOUND BUTTON -->
+<button id="videoMuteBtn">🔇 voice in</button>
+
+<!-- SLIDES -->
+<div id="slideArea">
+  <div class="slide active"><div class="title">NOREXA</div>AI HEALTH SYSTEM</div>
+  <div class="slide"><div class="title">PATIENT INTERACTION</div>Voice AI Assistant</div>
+  <div class="slide"><div class="title">OPENAI POWERED</div>Real AI Responses</div>
+  <div class="slide"><div class="title">HOSPITAL MODE</div>Smart Clinic System</div>
+</div>
+
+<!-- ADS -->
+<div id="adBox">
+  <img id="adImage" src="https://i.imgur.com/ZL4l5Gj.jpeg">
+</div>
+
+<!-- CONTROLS -->
+<div id="controls">
+  <button class="ctrl" onclick="prevSlide()">⏮</button>
+
+  <!-- ANNOUNCEMENT -->
+  <button id="soundBtn">announce</button>
+
+  <button class="ctrl" onclick="nextSlide()">⏭</button>
+</div>
+
+<!-- CHAT GPT -->
+<div id="chatBox">
+  <button onclick="openChatGPT()"
+    style="padding:12px 18px;border:none;border-radius:12px;
+    background:#00ffff;color:black;font-weight:bold;cursor:pointer;">
+    afya ai
+  </button>
+</div>
+
+<!-- BANNER -->
+<div id="bannerTicker">
+  <div id="bannerTickerInner">
+    NOREXA AI HEALTH SYSTEM • Smart Hospital AI • Voice Assistant • Powered By OpenAI
+  </div>
+</div>
+
+<script>
+
+/* CLOCK */
+setInterval(()=>{
+  document.getElementById("clock").innerText =
+  new Date().toLocaleTimeString();
+},1000);
+
+/* WEATHER (NAME ONLY) */
+const regions = ["Dar es Salaam","Dodoma","Arusha","Mwanza"];
+
+async function getCoords(name){
+  const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${name}&count=1`);
+  const data = await res.json();
+  if(!data.results) return null;
+  return data.results[0];
+}
+
+async function loadWeather(){
+  let html="<b>Weather Report</b><br>";
+
+  for(const r of regions){
+    try{
+      const loc = await getCoords(r);
+      if(!loc){
+        html += `${r}: not found<br>`;
+        continue;
+      }
+
+      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${loc.latitude}&longitude=${loc.longitude}&current_weather=true`);
+      const data = await res.json();
+
+      html += `${r}: ${Math.round(data.current_weather.temperature)}°C<br>`;
+    }catch{
+      html += `${r}: error<br>`;
+    }
+  }
+
+  document.getElementById("weather").innerHTML = html;
+}
+loadWeather();
+setInterval(loadWeather,600000);
+
+/* SLIDES */
+let slides=document.querySelectorAll(".slide");
+let i=0;
+function show(n){
+  slides[i].classList.remove("active");
+  i=(n+slides.length)%slides.length;
+  slides[i].classList.add("active");
+}
+function nextSlide(){show(i+1);}
+function prevSlide(){show(i-1);}
+setInterval(nextSlide,30000);
+
+/* VIDEO */
+const vids=[
+"https://i.imgur.com/YOYyJ49.mp4",
+"https://i.imgur.com/nXmK9G4.mp4"
+];
+let v=0;
+const video=document.getElementById("videoBG");
+
+function playVideo(){
+  video.src=vids[v];
+  video.play().catch(()=>{});
+  v=(v+1)%vids.length;
+}
+video.addEventListener("ended",playVideo);
+playVideo();
+
+/* ADS */
+const ads=[
+"https://i.imgur.com/ZL4l5Gj.jpeg",
+"https://i.imgur.com/dLeE6dL.jpeg"
+];
+let a=0;
+
+setInterval(()=>{
+  document.getElementById("adImage").src=ads[a];
+  document.getElementById("adBox").style.right="0";
+  setTimeout(()=>document.getElementById("adBox").style.right="-50%",10000);
+  a=(a+1)%ads.length;
+},30000);
+
+/* ANNOUNCEMENTS */
+const announce=[
+"Kesho yako inaanza na afya njema",
+"Chanjo zinapatikana leo",
+"Kliniki iko wazi kila siku ya kazi"
+];
+
+let aIndex=0;
+let voiceOn=true;
+
+const btn=document.getElementById("soundBtn");
+
+btn.onclick=function(){
+  voiceOn=!voiceOn;
+  btn.innerText=voiceOn?"Pause Voice":"Play Voice";
+  if(!voiceOn) speechSynthesis.cancel();
+};
+
+setInterval(()=>{
+  if(voiceOn && !speechSynthesis.speaking){
+    const msg=new SpeechSynthesisUtterance(announce[aIndex]);
+    msg.lang="sw-TZ";
+    speechSynthesis.speak(msg);
+    aIndex=(aIndex+1)%announce.length;
+  }
+},40000);
+
+/* CHATGPT */
+function openChatGPT(){
+  window.open("https://chat.openai.com/","_blank");
+}
+
+/* VIDEO SOUND CONTROL */
+const videoMuteBtn=document.getElementById("videoMuteBtn");
+let isMuted=true;
+
+videoMuteBtn.onclick=function(){
+  isMuted=!isMuted;
+  video.muted=isMuted;
+
+  if(isMuted){
+    videoMuteBtn.innerText="🔇 Unmute Video";
+  }else{
+    videoMuteBtn.innerText="🔊 Mute Video";
+    video.play().catch(()=>{});
+  }
+};
+
+/* FULLSCREEN */
+document.addEventListener("click",()=>{
+  document.documentElement.requestFullscreen?.();
+});
+
+</script>
+
+</body>
+</html>
