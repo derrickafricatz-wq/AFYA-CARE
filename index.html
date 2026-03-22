@@ -225,32 +225,6 @@ setInterval(()=>{
   a=(a+1)%ads.length;
 },30000);
 
-/* ANNOUNCEMENTS */
-const announce=[
-"Kesho yako inaanza na afya njema",
-"Chanjo zinapatikana leo",
-"Kliniki iko wazi kila siku ya kazi"
-];
-
-let aIndex=0;
-let voiceOn=true;
-
-const btn=document.getElementById("soundBtn");
-
-btn.onclick=function(){
-  voiceOn=!voiceOn;
-  btn.innerText=voiceOn?"Pause Voice":"Play Voice";
-  if(!voiceOn) speechSynthesis.cancel();
-};
-
-setInterval(()=>{
-  if(voiceOn && !speechSynthesis.speaking){
-    const msg=new SpeechSynthesisUtterance(announce[aIndex]);
-    msg.lang="sw-TZ";
-    speechSynthesis.speak(msg);
-    aIndex=(aIndex+1)%announce.length;
-  }
-},40000);
 
 /* CHATGPT */
 function openChatGPT(){
