@@ -1,6 +1,6 @@
 {
   "name": "NOREXA AI Health",
-  "short_name": "NOREXA",
+  "short_name": "AFYA AI",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#000000",
@@ -8,7 +8,7 @@
   "orientation": "landscape",
   "icons": [
     {
-      "src": "https://i.imgur.com/KZlMkqV.png",
+      "src": "https://i.imgur.com/vwNn5T7.jpeg",
       "sizes": "192x192",
       "type": "image/png"
     }
