@@ -319,7 +319,6 @@ const adImages=[
 "https://i.imgur.com/76Uyeqc.png"
 ];
 
-/* 🔥 PRELOAD (fix black issue fully) */
 adImages.forEach(src=>{
   const img=new Image();
   img.src=src;
@@ -339,7 +338,6 @@ const lessonAds={
 let lessonAdInterval;
 let lessonAdIndex=0;
 
-/* FIX RESET */
 function resetAdImage(){
   adImg.classList.remove("lessonFade");
   adImg.style.opacity="1";
@@ -350,7 +348,6 @@ function resetAdImage(){
   }
 }
 
-/* GLOBAL ADS */
 function showAd(){
 if(currentLesson!==null) return;
 
@@ -358,7 +355,6 @@ adImg.style.opacity="1";
 adImg.src=adImages[adIndex];
 
 setTimeout(()=>{adImage.style.right="0";},50);
-
 setTimeout(()=>{adImage.style.right="-100%";},8000);
 
 adIndex=(adIndex+1)%adImages.length;
@@ -376,7 +372,6 @@ clearInterval(adInterval);
 adImage.style.right="-100%";
 }
 
-/* LESSON ADS */
 function startLessonAds(id){
 stopLessonAds();
 if(!lessonAds[id]) return;
@@ -410,7 +405,6 @@ function stopLessonAds(){
 clearInterval(lessonAdInterval);
 }
 
-/* VIDEO */
 let lessons={
 1:["https://i.imgur.com/YOYyJ49.mp4","https://i.imgur.com/KZlMkqV.png"],
 2:["shortheart.mp4"],
@@ -431,7 +425,6 @@ video.play().catch(()=>{});
 playVideo(0);
 video.onended=()=>playVideo(index+1);
 
-/* CONTROLS */
 toggleBtn.onclick=()=>controls.classList.toggle("show");
 prev.onclick=()=>playVideo(index-1);
 next.onclick=()=>playVideo(index+1);
@@ -439,7 +432,6 @@ rew.onclick=()=>video.currentTime-=10;
 ff.onclick=()=>video.currentTime+=10;
 playPause.onclick=()=>video.paused?video.play():video.pause();
 
-/* KEYPAD */
 const display=document.getElementById("display");
 
 keypadToggle.onclick=()=>{
@@ -467,7 +459,6 @@ display.value="";
 keypad.style.display="none";
 }
 
-/* FINAL FIX */
 function refreshLessons(){
 currentLesson=null;
 
@@ -487,12 +478,68 @@ display.value="";
 keypad.style.display="none";
 }
 
-/* START */
 startAds();
 
-display.addEventListener("keypress",e=>{
-if(e.key==="Enter") submitLesson();
-});
+/* ================= VOICE ANNOUNCEMENT (FINAL FIX - NO VIDEO PAUSE) ================= */
+
+let announcementIndex = 0;
+
+let announcementVoices = [
+  "https://files.catbox.moe/ipajfe.m4a"
+];
+
+/* ➕ Add more voices anytime */
+function addAnnouncementVoice(url){
+  if(url && typeof url === "string"){
+    announcementVoices.push(url);
+  }
+}
+
+/* 🔊 Play without affecting video */
+function playAnnouncement(){
+
+  if(announcementVoices.length === 0) return;
+
+  // 🔥 FORCE video to keep playing
+  if(video.paused){
+    video.play().catch(()=>{});
+  }
+
+  const audio = new Audio(announcementVoices[announcementIndex]);
+  audio.volume = 1;
+
+  audio.play().catch(()=>{});
+
+  // 🔥 keep video alive during announcement
+  const keepAlive = setInterval(()=>{
+    if(video.paused){
+      video.play().catch(()=>{});
+    }
+  }, 500);
+
+  audio.onended = ()=>{
+    clearInterval(keepAlive);
+  };
+
+  announcementIndex = (announcementIndex + 1) % announcementVoices.length;
+}
+
+/* START AUTOMATICALLY AFTER FIRST CLICK */
+let announcementStarted = false;
+
+document.body.addEventListener("click", ()=>{
+  if(announcementStarted) return;
+  announcementStarted = true;
+
+  // first after 10 sec
+  setTimeout(playAnnouncement, 10000);
+
+  // every 60 sec
+  setInterval(playAnnouncement, 60000);
+
+},{once:true});
+
+/* ==================================================================== */
 
 </script>
 
