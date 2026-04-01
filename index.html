@@ -4,9 +4,7 @@
 <meta charset="UTF-8">
 <title>Health Education</title>
 
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00ffff">
-
 <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
 
 <style>
@@ -111,6 +109,78 @@ html, body {
   transition: opacity 0.8s ease-in-out;
 }
 
+/* SMART TOGGLE (HIDDEN INITIALLY) */
+#smartToggle {
+  position:fixed;
+  bottom:80px;
+  left:20px;
+  border-radius:40px;
+  background:linear-gradient(145deg,#00ffff,#008f8f);
+  border:none;
+  color:black;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  z-index:30;
+  opacity:0;
+  transform:translateY(100px);
+  transition:0.4s;
+}
+
+/* ICON */
+.dekaIcon {
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:black;
+  color:#00ffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Russo One';
+  font-size:20px;
+}
+
+/* LABEL */
+#smartLabel {
+  opacity:0;
+  transform:translateX(-10px);
+  transition:0.4s;
+  white-space:nowrap;
+}
+
+#smartToggle.active #smartLabel {
+  opacity:1;
+  transform:translateX(0);
+}
+
+/* PANEL */
+#smartPanel {
+  position:fixed;
+  bottom:150px;
+  left:20px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  opacity:0;
+  pointer-events:none;
+  transition:0.3s;
+  z-index:30;
+}
+#smartPanel.show {
+  opacity:1;
+  pointer-events:auto;
+}
+
+.smart-item {
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#00ffff;
+  color:black;
+}
+
 /* SCROLL BANNER */
 #scrollBanner {
   position: fixed;
@@ -151,183 +221,132 @@ html, body {
   z-index: 5;
 }
 
-/* BUTTONS */
-#toggleBtn, #keypadToggle, #healthyBtn {
-  position: fixed;
-  bottom: 62px;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #00ffff, #00baba);
-  color: black;
-  border: none;
-  z-index: 6;
-  font-size: 24px;
-}
-
-#toggleBtn { right: 20px; }
-#keypadToggle { left: 20px; }
-#healthyBtn { right: 90px; }
-
 /* CONTROLS */
 #controls {
   position: fixed;
-  bottom: 90px;
-  right: 20px;
-  width: 220px;
-  background: rgba(0,0,0,0.78);
-  border-radius: 22px;
-  z-index: 5;
+  bottom: 140px;
+  left: 20px;
+  background: rgba(0,0,0,0.7);
+  border-radius: 20px;
   opacity: 0;
   pointer-events: none;
+  z-index: 50; /* 🔥 higher than smartToggle */
 }
-
-#controls.show { opacity: 1; pointer-events: auto; }
-
+#controls.show {
+  opacity:1;
+  pointer-events:auto;
+}
 #controlGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 14px;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+  padding:10px;
 }
-
 .ctrl-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: none;
-  background: #00ffff;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:#00ffff;
+  border:none;
 }
 
 /* KEYPAD */
 #keypad {
-  position: fixed;
-  bottom: 140px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 260px;
-  background: rgba(0,0,0,0.9);
-  border-radius: 20px;
-  padding: 12px;
-  z-index: 20;
-  display: none;
+  position:fixed;
+  bottom:140px;
+  left:50%;
+  transform:translateX(-50%);
+  background:black;
+  padding:10px;
+  border-radius:15px;
+  display:none;
+  z-index:40;
 }
-
 #display {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: none;
-  text-align: center;
-  background: black;
-  color: #00ffff;
+  width:100%;
+  margin-bottom:10px;
+  padding:10px;
 }
-
 #keys {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
 }
-
 #keys button {
-  height: 55px;
-  border: none;
-  border-radius: 12px;
-  background: #00ffff;
-  color: black;
+  height:50px;
 }
 
-/* HEALTHY CLASS STYLES */
+/* HEALTH UI */
 #healthyContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background: black;
   z-index: 50;
   display: flex;
   flex-direction: column;
   color: #00ffff;
-  font-family: 'Russo One', sans-serif;
-  overflow: hidden;
+  font-family: 'Russo One';
 }
 
-#healthyTopicsRow {
+#topicsPanel {
+  padding: 15px;
+  overflow: auto;
+}
+
+#topicsList {
   display: flex;
-  justify-content: flex-start;
-  overflow-x: auto;
-  padding: 12px;
-  gap: 12px;
-  background: rgba(0,0,0,0.85);
-  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 10px;
 }
 
-#healthyTopicsRow button {
-  min-width: 120px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
+#topicsList button {
+  padding: 14px;
   background: #00ffff;
   color: black;
-  cursor: pointer;
-  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+#lessonView {
+  display: none;
+  flex-direction: column;
+  height: 100%;
 }
 
 #healthyScrollOuter {
-  flex: 1 1 auto;
+  flex: 1;
   overflow: hidden;
   position: relative;
-  padding: 12px;
 }
 
 #healthyScrollInner {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-}
-
-#healthyControls {
-  flex: 0 0 auto;
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  background: rgba(0,0,0,0.85);
-}
-
-#healthyControls button {
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: none;
-  background: #00ffff;
-  color: black;
-  cursor: pointer;
 }
 
 #healthyScrollInner img {
   max-width: 100%;
-  display: inline-block;
-  margin: 12px 0;
   border-radius: 12px;
-  max-height: 500px;
+  margin: 10px 0;
+}
+
+#healthyControls {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+#healthyControls button {
+  padding: 10px;
+  background: #00ffff;
+  border: none;
 }
 </style>
-
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "790d7b17-22ad-4a10-a093-c43d6bfda6eb",
-    });
-  });
-</script>
 </head>
+
 <body>
 
-<video id="brandVideo" autoplay playsinline></video>
+<video id="brandVideo" autoplay muted loop></video>
 
 <div id="logoTicker">
   <div id="logoTickerInner">
@@ -348,9 +367,20 @@ html, body {
   </div>
 </div>
 
-<button id="toggleBtn">≡</button>
-<button id="keypadToggle">⌨</button>
-<button id="healthyBtn">🏥</button>
+<!-- SMART TOGGLE -->
+<button id="smartToggle">
+  <span class="dekaIcon">DK</span>
+  <div id="smartLabel">
+    <div>Explore • Treat • Learn</div>
+    <small>Powered by DEKA</small>
+  </div>
+</button>
+
+<div id="smartPanel">
+  <button class="smart-item" id="openControls">🎮 Controls</button>
+  <button class="smart-item" id="openKeypad">⌨ Keyboard</button>
+  <button class="smart-item" id="openHealth">🏥 Health</button>
+</div>
 
 <div id="keypad">
   <input id="display" type="number">
@@ -382,6 +412,15 @@ html, body {
 </div>
 
 <script>
+/* ================= FULLSCREEN KIOSK ================= */
+function goFullScreen(){
+  const el=document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen();
+  else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  else if(el.msRequestFullscreen) el.msRequestFullscreen();
+}
+document.body.addEventListener("click", goFullScreen, {once:true});
+
 /* ================= VIDEO ================= */
 const video = document.getElementById("brandVideo");
 document.body.addEventListener("click", () => {
@@ -389,6 +428,7 @@ document.body.addEventListener("click", () => {
 },{once:true});
 
 /* ================= CLOCK ================= */
+const clockBox = document.getElementById("clockBox");
 setInterval(()=>clockBox.innerText=new Date().toLocaleTimeString(),1000);
 
 /* ================= WEATHER ================= */
@@ -420,7 +460,7 @@ let lessonAdInterval, lessonAdIndex=0;
 
 function resetAdImage(){ adImg.classList.remove("lessonFade"); adImg.style.opacity="1"; adImage.style.right="-100%"; if(adImages.length>0) adImg.src=adImages[0]; }
 
-function showAd(){ if(currentLesson!==null) return; adImg.style.opacity="1"; adImg.src=adImages[adIndex]; setTimeout(()=>adImage.style.right="0",50); setTimeout(()=>adImage.style.right="-100%",8000); adIndex=(adIndex+1)%adImages.length; }
+function showAd(){ if(currentLesson !== null && !lessonAds[currentLesson]) return; adImg.style.opacity="1"; adImg.src=adImages[adIndex]; setTimeout(()=>adImage.style.right="0",50); setTimeout(()=>adImage.style.right="-100%",8000); adIndex=(adIndex+1)%adImages.length; }
 
 function startAds(){ clearInterval(adInterval); resetAdImage(); showAd(); adInterval=setInterval(showAd,25000); }
 function stopAds(){ clearInterval(adInterval); adImage.style.right="-100%"; }
@@ -451,8 +491,51 @@ function playVideo(i){ if(i>=playlist.length) i=0; if(i<0) i=playlist.length-1; 
 playVideo(0);
 video.onended=()=>playVideo(index+1);
 
+/* SMART SYSTEM */
+const smartToggle=document.getElementById("smartToggle");
+const smartPanel=document.getElementById("smartPanel");
+
+let panelTimer=null;
+
+function showPanel(){
+  smartPanel.classList.add("show");
+  smartToggle.classList.add("active");
+  resetTimer();
+}
+
+function hidePanel(){
+  smartPanel.classList.remove("show");
+  smartToggle.classList.remove("active");
+}
+
+function resetTimer(){
+  if(panelTimer) clearTimeout(panelTimer);
+  panelTimer=setTimeout(hidePanel,4000);
+}
+
+smartToggle.onclick=()=>{
+  if(smartPanel.classList.contains("show")){
+    hidePanel();
+  } else {
+    showPanel();
+  }
+};
+
+smartPanel.addEventListener("click",resetTimer);
+
 /* ================= CONTROLS ================= */
-toggleBtn.onclick=()=>controls.classList.toggle("show");
+const openControls=document.getElementById("openControls");
+const openKeypad=document.getElementById("openKeypad");
+const openHealth=document.getElementById("openHealth");
+
+const controls=document.getElementById("controls");
+const prev=document.getElementById("prev");
+const next=document.getElementById("next");
+const rew=document.getElementById("rew");
+const ff=document.getElementById("ff");
+const playPause=document.getElementById("playPause");
+
+openControls.onclick=()=>controls.classList.toggle("show");
 prev.onclick=()=>playVideo(index-1);
 next.onclick=()=>playVideo(index+1);
 rew.onclick=()=>video.currentTime-=10;
@@ -461,7 +544,9 @@ playPause.onclick=()=>video.paused?video.play():video.pause();
 
 /* ================= KEYPAD ================= */
 const display=document.getElementById("display");
-keypadToggle.onclick=()=>{keypad.style.display=keypad.style.display==="none"?"block":"none"; setTimeout(()=>display.focus(),200);};
+const keypad=document.getElementById("keypad");
+
+openKeypad.onclick=()=>{keypad.style.display=keypad.style.display==="none"?"block":"none"; setTimeout(()=>display.focus(),200);};
 function pressKey(n){ display.value+=n; }
 function clearInput(){ display.value=""; }
 function submitLesson(){
@@ -480,95 +565,235 @@ startAds();
 display.addEventListener("keypress",e=>{if(e.key==="Enter") submitLesson();});
 
 /* ================= HEALTHY CLASS ================= */
-const healthyTopics={
-  water:{lines:[
-    "Kunywa maji mwilini husaidia kuendelea kuwa na maji ya kutosha mwilini na kuzuia upungufu wa maji mwilini kwa muda mrefu.",
-    "Husaidia katika mmeng'enyo wa chakula na kuhakikisha virutubisho vinachukuliwa vizuri mwilini.",
-    {type:"image",src:"https://i.imgur.com/PrtHFTa.jpeg"},
-    "Kusaidia kuondoa sumu mwilini na kuimarisha kazi ya figo.",
-    "Husaidia ngozi kuwa na afya na kuzuia ukavu wa ngozi."
-  ]},
-  lungs:{lines:[
-    "Pumzi ni muhimu kwa kutuma oksijeni katika damu na kuondoa kaboni dioksidi.",
-    "Mazoezi ya mwili husaidia kuongeza uwezo wa mapafu na kufanya pumzi kuwa thabiti.",
-    {type:"image",src:"https://i.imgur.com/EWlf9oK.jpeg"},
-    "Kuepuka uvutaji wa sigara husaidia kuzuia uharibifu wa mapafu.",
-    "Mazoezi ya kupumua kwa kina husaidia kuongeza uwezo wa mapafu.",
-    "Kuepuka mazingira yenye uchafu na vumbi husaidia afya ya mapafu.",
-    "Kuweka mwili kwenye mkao mzuri husaidia mapafu kufanya kazi vizuri."
-  ]},
-  overstress:{lines:[
-    "Mfadhaiko wa kupita kiasi (mfadhaiko sugu) husababisha kuzorota sana kwa mwili na kiakili, na kusababisha dalili kama vile maumivu ya kichwa, wasiwasi, mkazo wa misuli, uchovu na shida za kusaga chakula.",
-    {type:"image",src:"https://i.imgur.com/vfEZO1V.jpeg"},
-    
-    "Kushinda mfadhaiko kunahusisha mchanganyiko wa shughuli za kimwili, mbinu za kupumzika kiakili, na marekebisho ya mtindo wa maisha. Mikakati muhimu ni pamoja na mazoezi ya kawaida, kupumua kwa kina, kufanya mazoezi ya kuzingatia, kuweka mipaka, kudumisha lishe bora, na kupata usingizi wa kutosha. Usaidizi wa haraka unaofaa ni pamoja na kuchukua mapumziko, kunyoosha, au kutembea.",
-    {type:"image",src:"https://i.imgur.com/CTv6Baj.jpeg"},
-  ]}
+const healthyTopics = {
+
+hiv:{
+title:"H.I.V / UKIMWI (Hospital Class)",
+lines:[
+"Virusi vya H.I.V hushambulia mfumo wa kinga ya mwili na kudhoofisha uwezo wa kupambana na magonjwa.",
+{type:"image",src:"https://i.imgur.com/0uaNI3y.jpeg"},
+
+"Huenea kupitia ngono bila kinga, damu iliyoambukizwa, au vifaa visivyo salama kama sindano.",
+{type:"image",src:"https://i.imgur.com/sdp3Co3.jpeg"},
+
+"Dalili zinaweza kuchelewa kuonekana, ndiyo maana kupima mara kwa mara ni muhimu.",
+"Kinga: tumia kondomu, epuka kushiriki sindano, na hakikisha damu ni salama.",
+
+"Matibabu ya A.R.V husaidia kuishi maisha marefu na yenye afya."
+]},
+
+infectionSpread:{
+title:"Njia za Maambukizi ya Magonjwa",
+lines:[
+"Magonjwa huenea kupitia hewa, maji, chakula, au kugusana na mtu aliyeambukizwa.",
+{type:"image",src:"https://i.imgur.com/3m9ncCx.jpeg"},
+
+"Kukohoa na kupiga chafya husambaza vimelea kwa urahisi.",
+"Kutokunawa mikono ni chanzo kikubwa cha maambukizi.",
+"Kuepuka mikusanyiko wakati wa mlipuko hupunguza hatari ya kuambukizwa."
+]},
+
+vaccines:{
+title:"Umuhimu wa Chanjo",
+lines:[
+"Chanjo hulinda mwili dhidi ya magonjwa hatari kabla hujaambukizwa.",
+"Hufundisha mfumo wa kinga kutambua na kupambana na vimelea.",
+"Watoto na watu wazima wanahitaji chanjo tofauti kulingana na umri.",
+{type:"image",src:"https://i.imgur.com/oBItPMK.jpeg"},
+
+"Chanjo huzuia milipuko ya magonjwa kwenye jamii."
+]},
+
+respiratory:{
+title:"Magonjwa ya Njia ya Hewa",
+lines:[
+"Magonjwa ya hewa huenea kwa urahisi kupitia pumzi.",
+"Dalili: kikohozi, homa, kupumua kwa shida.",
+"Kinga: vaa barakoa wakati wa mlipuko na epuka msongamano.",
+{type:"image",src:"https://i.imgur.com/jKkFIiu.jpeg"},
+
+"Nawa mikono mara kwa mara na tumia sanitizer."
+]},
+
+medication:{
+title:"Matumizi Sahihi ya Dawa",
+lines:[
+"Tumia dawa kulingana na maelekezo ya daktari.",
+{type:"image",src:"https://i.imgur.com/DST5dyx.png"},
+
+"Usitumie antibiotics bila ushauri wa kitaalamu.",
+"Kumaliza dozi ni muhimu kuzuia usugu wa dawa.",
+{type:"image",src:"https://i.imgur.com/kd0B9Dc.png"},
+
+"Kuhifadhi dawa vibaya hupunguza ufanisi wake."
+]},
+
 };
 
-let healthyActive=false, scrollInterval=null, scrollOuter=null, scrollInner=null;
+let scrollInterval=null, scrollSpeed=1;
+window._inner=null, window._outer=null, window._lesson=null, window._topics=null;
+
+let topicsExpanded = true;
+
+openHealth.onclick=showHealthyClass;
 
 function showHealthyClass(){
-  healthyActive=true; stopAds(); stopLessonAds(); video.pause();
-  let container=document.getElementById("healthyContainer");
-  if(container) container.remove();
-  container=document.createElement("div"); container.id="healthyContainer"; document.body.appendChild(container);
+  if(document.getElementById("healthyContainer")) return;
+  const c=document.createElement("div"); c.id="healthyContainer"; document.body.appendChild(c);
 
-  const topicsRow=document.createElement("div"); topicsRow.id="healthyTopicsRow";
-  Object.keys(healthyTopics).forEach(key=>{
-    const btn=document.createElement("button"); btn.innerText=key.toUpperCase();
-    btn.onclick=()=>loadHealthyTopic(key);
-    topicsRow.appendChild(btn);
+  const topics=document.createElement("div"); topics.id="topicsPanel";
+
+  const toggle=document.createElement("button"); toggle.innerText="☰ HIDE";
+  toggle.onclick=()=>toggleTopics(toggle);
+
+  const list=document.createElement("div"); list.id="topicsList";
+
+  Object.keys(healthyTopics).forEach((k,i)=>{
+    const b=document.createElement("button");
+    b.innerText=(i+1)+". "+healthyTopics[k].title;
+    b.onclick=()=>openTopic(k);
+    list.appendChild(b);
   });
-  container.appendChild(topicsRow);
 
-  scrollOuter=document.createElement("div"); scrollOuter.id="healthyScrollOuter"; container.appendChild(scrollOuter);
-  scrollInner=document.createElement("div"); scrollInner.id="healthyScrollInner"; scrollOuter.appendChild(scrollInner);
+  topics.appendChild(toggle);
+  topics.appendChild(list);
+  c.appendChild(topics);
+
+  const lesson=document.createElement("div"); lesson.id="lessonView";
+
+  const outer=document.createElement("div"); outer.id="healthyScrollOuter";
+  const inner=document.createElement("div"); inner.id="healthyScrollInner";
+  outer.appendChild(inner);
 
   const controls=document.createElement("div"); controls.id="healthyControls";
 
-  const backBtn=document.createElement("button"); backBtn.innerText="⏮ BACK"; backBtn.onclick=showHealthyClass;
-  const playBtn=document.createElement("button"); playBtn.innerText="⏯ PLAY/PAUSE"; playBtn.onclick=toggleScroll;
+  const backBtn=document.createElement("button"); backBtn.innerText="BACK";
+  backBtn.onclick=()=>{
+    lesson.style.display="none";
+    topics.style.display="block";
+    clearInterval(scrollInterval);
+  };
 
-  const readBtn=document.createElement("button"); readBtn.innerText="🔊 READ"; readBtn.onclick=()=>readAloud(scrollInner.innerText);
+  const playBtn=document.createElement("button"); playBtn.innerText="⏯ PLAY/PAUSE";
+  playBtn.onclick=toggleScroll;
 
-  controls.appendChild(backBtn); controls.appendChild(playBtn); controls.appendChild(readBtn);
-  container.appendChild(controls);
+  const readBtn=document.createElement("button"); readBtn.innerText="🔊 READ";
+  readBtn.onclick=()=>readAloud(inner.innerText);
+
+  controls.appendChild(backBtn);
+  controls.appendChild(playBtn);
+  controls.appendChild(readBtn);
+
+  lesson.appendChild(outer);
+  lesson.appendChild(controls);
+  c.appendChild(lesson);
+
+  window._inner=inner;
+  window._outer=outer;
+  window._lesson=lesson;
+  window._topics=topics;
 }
 
-let scrollSpeed=1;
-function loadHealthyTopic(topicKey){
-  const topic=healthyTopics[topicKey]; scrollInner.innerHTML="";
+function toggleTopics(toggleBtn){
+  const buttons = _topics.querySelectorAll("#topicsList button");
+
+  if(topicsExpanded){
+    buttons.forEach((btn, i)=>{
+      btn.style.display = i < 3 ? "block" : "none";
+    });
+    toggleBtn.innerText = "☰ SHOW";
+    topicsExpanded = false;
+  } else {
+    buttons.forEach(btn=>{
+      btn.style.display = "block";
+    });
+    toggleBtn.innerText = "☰ HIDE";
+    topicsExpanded = true;
+  }
+}
+
+function openTopic(key){
+  const topic=healthyTopics[key];
+
+  _lesson.style.display="flex";
+  _topics.style.display="none";
+  _inner.innerHTML="";
+
   topic.lines.forEach(line=>{
-    const div=document.createElement("div"); div.style.padding="10px 0"; div.style.fontSize="34px"; div.style.lineHeight="3";
+    const div=document.createElement("div");
+    div.style.padding="10px 0";
+    div.style.fontSize="34px";
+    div.style.lineHeight="3";
+
     if(typeof line==="string") div.innerText=line;
+
     if(typeof line==="object" && line.type==="image"){
-      const img=document.createElement("img"); img.src=line.src; div.appendChild(img);
+      const img=document.createElement("img");
+      img.src=line.src;
+      div.appendChild(img);
     }
-    scrollInner.appendChild(div);
+
+    _inner.appendChild(div);
   });
-  scrollInner.style.top=scrollOuter.clientHeight+"px"; startScrolling();
+
+  _inner.style.top=_outer.clientHeight+"px";
+  startScrolling();
 }
 
-function startScrolling(){ if(scrollInterval) clearInterval(scrollInterval);
+function startScrolling(){
+  if(scrollInterval) clearInterval(scrollInterval);
+
   scrollInterval=setInterval(()=>{
-    let top=parseFloat(scrollInner.style.top); top-=scrollSpeed;
-    if(top+scrollInner.offsetHeight<0) top=scrollOuter.clientHeight;
-    scrollInner.style.top=top+"px";
+    let top=parseFloat(_inner.style.top);
+    top-=scrollSpeed;
+
+    if(top+_inner.offsetHeight<0) top=_outer.clientHeight;
+
+    _inner.style.top=top+"px";
   },40);
 }
 
-function toggleScroll(){ if(scrollInterval){ clearInterval(scrollInterval); scrollInterval=null; } else startScrolling(); }
+function toggleScroll(){
+  if(scrollInterval){
+    clearInterval(scrollInterval);
+    scrollInterval=null;
+  } else startScrolling();
+}
 
 function readAloud(text){
-  if(!('speechSynthesis' in window)) return alert("Browser does not support speech synthesis");
+  if(!('speechSynthesis' in window)) return alert("No speech support");
+
   const utter=new SpeechSynthesisUtterance(text);
   utter.lang='sw-TZ';
   speechSynthesis.speak(utter);
 }
 
-healthyBtn.onclick=showHealthyClass;
-</script>
+/* GESTURES */
+let startY=0,endY=0;
 
+document.addEventListener("touchstart",(e)=>{
+  startY=e.changedTouches[0].screenY;
+});
+
+document.addEventListener("touchend",(e)=>{
+  endY=e.changedTouches[0].screenY;
+  let dy=endY-startY;
+
+  if(dy<-60){
+    smartToggle.style.opacity="1";
+    smartToggle.style.transform="translateY(0)";
+  }
+
+  if(dy>60){
+    smartPanel.classList.remove("show");
+    smartToggle.classList.remove("active");
+    smartToggle.style.opacity="0";
+    smartToggle.style.transform="translateY(100px)";
+    controls.classList.remove("show");
+    keypad.style.display="none";
+  }
+});
+
+</script>
 </body>
 </html>
