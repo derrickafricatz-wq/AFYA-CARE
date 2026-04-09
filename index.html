@@ -347,14 +347,14 @@ html, body {
   <span class="dekaIcon">DK</span>
   <div id="smartLabel">
     <div>Explore • Treat • Learn</div>
-    <small>Powered by DEKA</small>
+    <small>powered by deka</small>
   </div>
 </button>
 
 <div id="smartPanel">
-  <button class="smart-item" id="openControls">🎮 Controls</button>
-  <button class="smart-item" id="openKeypad">⌨ Keyboard</button>
-  <button class="smart-item" id="openHealth">🏥 Health</button>
+  <button class="smart-item" id="openControls">🖱️ Controls</button>
+  <button class="smart-item" id="openKeypad">⌨️ Keyboard</button>
+  <button class="smart-item" id="openHealth">💊 Health</button>
 </div>
 
 <div id="keypad">
@@ -399,9 +399,9 @@ document.body.addEventListener("click", goFullScreen, {once:true});
 const guideSteps = [
   {text: "This is the video area. Tap to unmute and play videos."},
   {text: "Swipe down to hide panels, swipe up to reveal the smart toggle."},
-  {text: "Press '🎮 Controls' to play/pause, rewind, or fast forward videos."},
-  {text: "Press '⌨ Keyboard' to enter a lesson number."},
-  {text: "Press '🏥 Health' to explore health lessons."},
+  {text: "Press '🖱️Controls' to play/pause, rewind, or fast forward videos."},
+  {text: "Press '⌨️Keyboard' to enter a lesson number."},
+  {text: "Press '💊 Health' to explore health lessons."},
   {text: "Inside a lesson, click any line or image to mark it for printing."},
   {text: "Press the '🖨 PRINT' button to print only the marked parts."},
   {text: "Swipe up/down or use the top buttons to hide/show topics."},
@@ -570,70 +570,112 @@ display.addEventListener("keypress",e=>{if(e.key==="Enter") submitLesson();});
 /* ================= HEALTHY CLASS ================= */
 const healthyTopics = {
 
-hiv:{
-title:"H.I.V / UKIMWI (Hospital Class)",
-lines:[
-"Virusi vya H.I.V hushambulia mfumo wa kinga ya mwili na kudhoofisha uwezo wa kupambana na magonjwa.",
-{type:"image",src:"https://i.imgur.com/0uaNI3y.jpeg"},
+hiv: {
+  title: "H.I.V / Ukimwi (Hospital Class)",
+  lines: [
+    "📖 Ufafanuzi / Definition",
+    "HIV (Virusi vya Ukimwi) ni virusi vinavyoathiri mfumo wa kinga ya mwili, na kufanya mwili usiwe na uwezo wa kupambana na magonjwa.",
+    { type: "image", src: "https://i.imgur.com/0uaNI3y.jpeg" },
 
-"Huenea kupitia ngono bila kinga, damu iliyoambukizwa, au vifaa visivyo salama kama sindano.",
-{type:"image",src:"https://i.imgur.com/sdp3Co3.jpeg"},
+    "📖 Dalili / Symptoms",
+    "Homa, kichefuchefu, uchovu wa muda mrefu, kupoteza uzito, kupeleka kwa urahisi.",
 
-"Dalili zinaweza kuchelewa kuonekana, ndiyo maana kupima mara kwa mara ni muhimu.",
-"Kinga: tumia kondomu, epuka kushiriki sindano, na hakikisha damu ni salama.",
+    "📖 Njia za Maambukizi / Transmission",
+    "HIV huenea kupitia ngono bila kinga, damu iliyoambukizwa, au vifaa visivyo salama kama sindano.",
+    { type: "image", src: "https://i.imgur.com/sdp3Co3.jpeg" },
 
-"Matibabu ya A.R.V husaidia kuishi maisha marefu na yenye afya."
-]},
+    "📖 Kinga na Kuzuia / Prevention",
+    "Tumia kondomu wakati wa ngono, epuka kutumia sindano zisizo safi, hakikisha damu ni salama.",
 
-infectionSpread:{
-title:"Njia za Maambukizi ya Magonjwa",
-lines:[
-"Magonjwa huenea kupitia hewa, maji, chakula, au kugusana na mtu aliyeambukizwa.",
-{type:"image",src:"https://i.imgur.com/3m9ncCx.jpeg"},
+    "📖 Matibabu / Treatment",
+    "Matibabu ya ARV husaidia kuishi maisha marefu na yenye afya.",
 
-"Kukohoa na kupiga chafya husambaza vimelea kwa urahisi.",
-"Kutokunawa mikono ni chanzo kikubwa cha maambukizi.",
-"Kuepuka mikusanyiko wakati wa mlipuko hupunguza hatari ya kuambukizwa."
-]},
+    "🌐Vyanzo / References",
+    "WHO, UNAIDS"
+  ]
+},
 
-vaccines:{
-title:"Umuhimu wa Chanjo",
-lines:[
-"Chanjo hulinda mwili dhidi ya magonjwa hatari kabla hujaambukizwa.",
-"Hufundisha mfumo wa kinga kutambua na kupambana na vimelea.",
-"Watoto na watu wazima wanahitaji chanjo tofauti kulingana na umri.",
-{type:"image",src:"https://i.imgur.com/oBItPMK.jpeg"},
+infectionSpread: {
+  title: "Njia za Maambukizi ya Magonjwa / Infection Spread",
+  lines: [
+    "📖 Ufafanuzi / Definition",
+    "Maambukizi hutokea pale ambapo viini vya magonjwa vinapitia kutoka kwa mtu mmoja hadi mwingine.",
 
-"Chanjo huzuia milipuko ya magonjwa kwenye jamii."
-]},
+    "📖 Njia za Maambukizi / Transmission",
+    "Magonjwa huenea kupitia hewa, maji, chakula, au kugusana na mtu aliyeambukizwa.",
+    "Kukohoa na kupiga chafya husambaza vimelea kwa urahisi.",
+    "Kutokunawa mikono ni chanzo kikubwa cha maambukizi.",
+    "Kuepuka mikusanyiko wakati wa mlipuko hupunguza hatari ya kuambukizwa.",
+    { type: "image", src: "https://i.imgur.com/3m9ncCx.jpeg" },
 
-respiratory:{
-title:"Magonjwa ya Njia ya Hewa",
-lines:[
-"Magonjwa ya hewa huenea kwa urahisi kupitia pumzi.",
-"Dalili: kikohozi, homa, kupumua kwa shida.",
-"Kinga: vaa barakoa wakati wa mlipuko na epuka msongamano.",
-{type:"image",src:"https://i.imgur.com/jKkFIiu.jpeg"},
+    "📖 Kinga / Prevention",
+    "Osha mikono mara kwa mara, vaa barakoa wakati wa mlipuko, epuka kugusana na wagonjwa.",
 
-"Nawa mikono mara kwa mara na tumia sanitizer."
-]},
+    "🌐 Vyanzo / References",
+    "WHO"
+  ]
+},
 
-medication:{
-title:"Matumizi Sahihi ya Dawa",
-lines:[
-"Tumia dawa kulingana na maelekezo ya daktari.",
-{type:"image",src:"https://i.imgur.com/DST5dyx.png"},
+vaccines: {
+  title: "Umuhimu wa Chanjo / Importance of Vaccines",
+  lines: [
+    "📖 Ufafanuzi / Definition",
+    "Chanjo hulinda mwili dhidi ya magonjwa hatari kabla hujaambukizwa.",
+    { type: "image", src: "https://i.imgur.com/oBItPMK.jpeg" },
 
-"Usitumie antibiotics bila ushauri wa kitaalamu.",
-"Kumaliza dozi ni muhimu kuzuia usugu wa dawa.",
-{type:"image",src:"https://i.imgur.com/kd0B9Dc.png"},
+    "📖 Jinsi Chanjo Inavyofanya Kazi / How Vaccines Work",
+    "Hufundisha mfumo wa kinga kutambua na kupambana na vimelea.",
 
-"Kuhifadhi dawa vibaya hupunguza ufanisi wake."
-]},
+    "📖 Umuhimu / Importance",
+    "Watoto na watu wazima wanahitaji chanjo tofauti kulingana na umri.",
+    "Chanjo huzuia milipuko ya magonjwa kwenye jamii.",
+
+    "🌐 Vyanzo / References",
+    "WHO, UNICEF"
+  ]
+},
+
+respiratory: {
+  title: "Magonjwa ya Njia ya Hewa / Respiratory Illnesses",
+  lines: [
+    "📖 Ufafanuzi / Definition",
+    "Magonjwa ya hewa huathiri njia ya kupumua na huenea kwa urahisi.",
+
+    "📖 Dalili / Symptoms",
+    "Kikohozi, homa, kupumua kwa shida.",
+    { type: "image", src: "https://i.imgur.com/jKkFIiu.jpeg" },
+
+    "📖 Kinga / Prevention",
+    "Vaa barakoa wakati wa mlipuko, epuka msongamano.",
+    "Nawa mikono mara kwa mara na tumia sanitizer.",
+
+    "🌐 Vyanzo / References",
+    "WHO, CDC"
+  ]
+},
+
+medication: {
+  title: "Matumizi Sahihi ya Dawa / Proper Medication Use",
+  lines: [
+    "📖 Ufafanuzi / Definition",
+    "Kutumia dawa kwa usahihi ni muhimu kwa afya na kuzuia upinzani wa dawa.",
+
+    "📖 Kanuni Muhimu / Key Guidelines",
+    "Tumia dawa kulingana na maelekezo ya daktari.",
+    { type: "image", src: "https://i.imgur.com/DST5dyx.png" },
+    "Usitumie antibiotics bila ushauri wa kitaalamu.",
+    "Kumaliza dozi kamili ni muhimu kuzuia usugu wa dawa.",
+    { type: "image", src: "https://i.imgur.com/kd0B9Dc.png" },
+    "Kuhifadhi dawa vibaya hupunguza ufanisi wake.",
+
+    "🌐 Vyanzo / References",
+    "WHO, Local Health Authorities"
+  ]
+},
 
 };
 
-let scrollInterval=null, scrollSpeed=1;
+let scrollInterval=null, scrollSpeed=1.5;
 window._inner=null, window._outer=null, window._lesson=null, window._topics=null;
 
 let topicsExpanded = true;
@@ -702,6 +744,29 @@ topBar.appendChild(exitBtn);
   outer.appendChild(inner);
 
 const controls=document.createElement("div"); controls.id="healthyControls";
+
+let rotated = false;
+
+const rotateBtn = document.createElement("button");
+rotateBtn.innerText = "⟳ ROTATE";
+
+rotateBtn.onclick = () => {
+    rotated = !rotated;
+
+    if(rotated){
+        _lesson.style.transform = "rotate(90deg)";
+        _lesson.style.transformOrigin = "center";
+        _lesson.style.width = "100vh";
+        _lesson.style.height = "100vw";
+        _lesson.style.transition = "0.4s";
+    } else {
+        _lesson.style.transform = "rotate(0deg)";
+        _lesson.style.width = "100%";
+        _lesson.style.height = "100%";
+    }
+};
+
+controls.appendChild(rotateBtn);
 
 const backBtn=document.createElement("button"); backBtn.innerText="BACK";
 backBtn.onclick=()=>{
