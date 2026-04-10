@@ -299,8 +299,13 @@ html, body {
 }
 
 #healthyScrollInner img {
-  max-width: 100%;
+  width: 90%;
+  max-width: 500px;
   height: auto;
+  display: block;
+  margin: 15px auto;
+  border-radius: 15px;
+  box-shadow: 0 0 15px rgba(0,255,255,0.3);
 }
 
 #healthyControls {
@@ -312,6 +317,23 @@ html, body {
   padding: 10px;
   background: #00ffff;
   border: none;
+}
+
+#lessonView {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+#healthyControls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
 }
 </style>
 </head>
@@ -332,7 +354,7 @@ html, body {
 
 <div id="clockBox"></div>
 <div id="weatherBox">Loading...</div>
-<div id="lessonLabel">ALL HEALTH LESSONS. By Deka</div>
+<div id="lessonLabel">powered by deka</div>
 
 <div id="adImage"><img id="adImg"></div>
 
@@ -404,7 +426,8 @@ const guideSteps = [
   {text: "Press '💊 Health' to explore health lessons."},
   {text: "Inside a lesson, click any line or image to mark it for printing."},
   {text: "Press the '🖨 PRINT' button to print only the marked parts."},
-  {text: "Swipe up/down or use the top buttons to hide/show topics."},
+  {text: "Press the '🔃 ROTATE' button to manage landscape/portrait."},
+{text: "Swipe up/down or use the top buttons to hide/show topics."},
   {text: "That's it! Enjoy The Journey."}
 ];
 
@@ -452,7 +475,7 @@ async function loadWeather(){
 loadWeather(); setInterval(loadWeather,600000);
 
 /* ================= ADS ================= */
-const adImages=["https://i.imgur.com/LJV1sMb.png","https://i.imgur.com/dFw0tik.png"];
+const adImages=["https://i.imgur.com/Vq3ksCE.png","https://i.imgur.com/dFw0tik.png"];
 adImages.forEach(src=>{new Image().src=src;});
 let adIndex=0, adInterval, currentLesson=null;
 const lessonAds={1:["https://i.imgur.com/UPgPdWT.jpeg","https://i.imgur.com/HdKedqJ.jpeg"],
@@ -675,7 +698,7 @@ medication: {
 
 };
 
-let scrollInterval=null, scrollSpeed=1.5;
+let scrollInterval=null, scrollSpeed=1.8;
 window._inner=null, window._outer=null, window._lesson=null, window._topics=null;
 
 let topicsExpanded = true;
@@ -748,21 +771,31 @@ const controls=document.createElement("div"); controls.id="healthyControls";
 let rotated = false;
 
 const rotateBtn = document.createElement("button");
-rotateBtn.innerText = "⟳ ROTATE";
+rotateBtn.innerText = "🔃 ROTATE";
 
 rotateBtn.onclick = () => {
     rotated = !rotated;
 
     if(rotated){
-        _lesson.style.transform = "rotate(90deg)";
-        _lesson.style.transformOrigin = "center";
-        _lesson.style.width = "100vh";
-        _lesson.style.height = "100vw";
-        _lesson.style.transition = "0.4s";
+        _lesson.style.position = "fixed";
+        _lesson.style.top = "50%";
+        _lesson.style.left = "50%";
+
+        _lesson.style.width = window.innerHeight + "px";
+        _lesson.style.height = window.innerWidth + "px";
+
+        _lesson.style.transform = "translate(-50%, -50%) rotate(90deg)";
+        _lesson.style.transformOrigin = "center center";
+
     } else {
-        _lesson.style.transform = "rotate(0deg)";
-        _lesson.style.width = "100%";
-        _lesson.style.height = "100%";
+        _lesson.style.position = "fixed";
+        _lesson.style.top = "0";
+        _lesson.style.left = "0";
+
+        _lesson.style.width = "100vw";
+        _lesson.style.height = "100vh";
+
+        _lesson.style.transform = "none";
     }
 };
 
@@ -847,9 +880,9 @@ function openTopic(key){
 
   topic.lines.forEach(line=>{
     const div=document.createElement("div");
-    div.style.padding="10px 0";
-    div.style.fontSize="34px";
-    div.style.lineHeight="3";
+    div.style.padding="15px 0";
+    div.style.fontSize="24px";
+    div.style.lineHeight="2";
     div.style.cursor = "pointer";  // indicate it can be selected
 
     if(typeof line==="string") div.innerText=line;
