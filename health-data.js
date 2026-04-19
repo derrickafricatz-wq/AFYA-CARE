@@ -11,7 +11,7 @@ hiv: {
     "Homa za mara kwa mara, uchovu mkali, kupungua uzito, na maambukizi ya mara kwa mara.",
 
     "📖 Njia za Maambukizi",
-    "VVU huenea kupitia ngono bila kinga, damu iliyoambukizwa, na matumizi ya sindano zisizo salama.",
+    "Virusi Vya Ukimwi huenea kupitia ngono bila kinga, damu iliyoambukizwa, na matumizi ya sindano zisizo salama.",
     { type: "image", src: "https://i.imgur.com/sdp3Co3.jpeg" },
 
     "📖 Kinga",
