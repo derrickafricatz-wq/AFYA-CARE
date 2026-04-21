@@ -10,9 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
 
 <style>
-body {
-  touch-action: pan-y;
-}
 html, body {
   margin: 0;
   padding: 0;
@@ -357,12 +354,10 @@ Install App
 
 <script src="health-data.js"></script>
 
-<script src="lesson-data.js"></script>
-
 <video id="brandVideo" autoplay muted playsinline></video>
 
 <div id="clockBox"></div>
-<button id="topGuideBtn" style="
+<button id="settingsBtn" style="
   position:fixed;
   top:10px;
   right:20px;
@@ -371,10 +366,10 @@ Install App
   border-radius:10px;
   background:#00ffff;
   color:black;
-  font-size:16px;
+  font-size:18px;
   z-index:200;
 ">
-⚙️ Guide
+⚙️
 </button>
 <div id="lessonLabel">powered by deka</div>
 
@@ -398,8 +393,7 @@ Install App
 <div id="smartPanel">
   <button class="smart-item" id="openControls">🖱️ Controls</button>
   <button class="smart-item" id="openKeypad">⌨️ Keyboard</button>
-  <button class="smart-item" id="openHealth">💊 Health</button>
-  <button class="smart-item" id="openAnnouncement">🔊 Announcement</button>
+  <button class="smart-item" id="openHealth">📚 Health</button>
 </div>
 
 <div id="keypad">
@@ -421,29 +415,6 @@ Install App
   </div>
 </div>
 
-<div id="announcementBox" style="
-  position:fixed;
-  bottom:140px;
-  left:50%;
-  transform:translateX(-50%);
-  background:black;
-  padding:20px;
-  border-radius:15px;
-  display:none;
-  z-index:40;
-  text-align:center;
-">
-
-  <button id="announceBtn" style="
-    padding:15px 25px;
-    background:#00ffff;
-    border:none;
-    border-radius:10px;
-    font-size:18px;
-  ">🔊 Play Announcement</button>
-
-</div>
-
 <div id="controls">
   <div id="controlGrid">
     <button class="ctrl-btn" id="prev">⏮</button>
@@ -452,36 +423,6 @@ Install App
     <button class="ctrl-btn" id="next">⏭</button>
     <button class="ctrl-btn" id="ff">⏩</button>
   </div>
-</div>
-
-<div id="updateBox" style="
-  position:fixed;
-  top:80px;
-  right:20px;
-  background:#00ffff;
-  color:black;
-  padding:15px;
-  border-radius:12px;
-  display:none;
-  z-index:200;
-  font-family:'Russo One';
-  max-width:250px;
-">
-
-  <div id="updateText"></div>
-
-  <button onclick="applyUpdate()" style="
-    margin-top:10px;
-    padding:8px;
-    border:none;
-    background:black;
-    color:#00ffff;
-    border-radius:8px;
-    width:100%;
-  ">
-    Update Now
-  </button>
-
 </div>
 
 <script>
@@ -495,20 +436,16 @@ function goFullScreen(){
 document.body.addEventListener("click", goFullScreen, {once:true});
 
 const guideSteps = [
-  {text: "Hili ni eneo la video. Gusa skrini ili kuanza sauti."},
-  {text: "Telezesha juu kuonyesha menu, telezesha chini kuficha."},
-  {text: "Bonyeza '🖱️ Controls' kucheza, kusimamisha au kurudisha video."},
-  {text: "Bonyeza '⌨️ Keyboard' kuingiza namba ya somo."},
-  {text: "Bonyeza '💊 Health' kujifunza masomo ya afya."},
-  {text: "Bonyeza '🔊 Announcement' kusikiliza tangazo muhimu la afya."},
-  {text: "Ndani ya somo, gusa maandishi au picha kuchagua sehemu."},
-  {text: "Bonyeza '🖨 PRINT' kuchapisha sehemu ulizochagua."},
-  {text: "Bonyeza '🔃 ROTATE' kubadilisha mwelekeo wa skrini."},
-  {text: "Bonyeza '⏯ PLAY/PAUSE' kusimamisha au kuendelea maandishi."},
-  {text: "Bonyeza '↩️ BACK' kurudi kwenye mada au tumia ❎ kutoka kabisa."},
-  {text: "Telezesha juu/chini au tumia vitufe kudhibiti."},
-  {text: "Utajulishwa kuhusu taarifa mpya kupitia notification."},
-  {text: "Karibu utumie Afya Care."}
+  {text: "This is the video area. Tap to unmute and play videos."},
+  {text: "Swipe down to hide panels, swipe up to reveal the smart toggle."},
+  {text: "Press '🖱️Controls' to play/pause, rewind, or fast forward videos."},
+  {text: "Press '⌨️Keyboard' to enter a lesson number."},
+  {text: "Press '📚 Health' to explore health lessons."},
+  {text: "Inside a lesson, click any line or image to mark it for printing."},
+  {text: "Press the '🖨 PRINT' button to print only the marked parts."},
+  {text: "Press the '🔃 ROTATE' button to manage landscape/portrait."},
+{text: "Swipe up/down or use the top buttons to hide/show topics."},
+  {text: "That's it! Enjoy The Journey."}
 ];
 
 let guideIndex = 0;
@@ -525,6 +462,14 @@ nextGuide.onclick = () => {
   }
 };
 
+const settingsBtn = document.getElementById("settingsBtn");
+
+settingsBtn.onclick = () => {
+  guideOverlay.style.display = "flex";
+  guideIndex = 0;
+  guideText.innerText = guideSteps[0].text;
+};
+
 /* ================= VIDEO ================= */
 const video = document.getElementById("brandVideo");
 document.body.addEventListener("click", () => {
@@ -536,7 +481,7 @@ const clockBox = document.getElementById("clockBox");
 setInterval(()=>clockBox.innerText=new Date().toLocaleTimeString(),1000);
 
 /* ================= ADS ================= */
-const adImages=["https://i.imgur.com/5g1NxWl.png","https://i.imgur.com/dFw0tik.png"];
+const adImages=["https://i.imgur.com/Vq3ksCE.png","https://i.imgur.com/dFw0tik.png"];
 adImages.forEach(src=>{new Image().src=src;});
 let adIndex=0, adInterval, currentLesson=null;
 const lessonAds={1:["https://i.imgur.com/UPgPdWT.jpeg","https://i.imgur.com/HdKedqJ.jpeg"],
@@ -640,25 +585,6 @@ smartPanel.addEventListener("click",resetTimer);
 const openControls=document.getElementById("openControls");
 const openKeypad=document.getElementById("openKeypad");
 const openHealth=document.getElementById("openHealth");
-const topGuideBtn = document.getElementById("topGuideBtn");
-
-topGuideBtn.onclick = () => {
-  guideOverlay.style.display = "flex";
-  guideIndex = 0;
-  guideText.innerText = guideSteps[0].text;
-};
-const openAnnouncement = document.getElementById("openAnnouncement");
-const announcementBox = document.getElementById("announcementBox");
-const announceBtn = document.getElementById("announceBtn");
-
-const announcementAudio = new Audio("https://media.vocaroo.com/mp3/1fv1U2uLB7bl");
-
-announcementAudio.preload = "auto";
-announcementAudio.volume = 1;
-
-let isPlaying = false;
-let announceLoopTimer = null;
-const LOOP_DELAY = 120000; // 2 minutes
 
 const controls=document.getElementById("controls");
 const prev=document.getElementById("prev");
@@ -667,70 +593,18 @@ const rew=document.getElementById("rew");
 const ff=document.getElementById("ff");
 const playPause=document.getElementById("playPause");
 
-openControls.onclick = () => { 
-  controls.classList.toggle("show");
-  announcementBox.style.display = "none";
-};
+openControls.onclick=()=>controls.classList.toggle("show");
 prev.onclick=()=>playVideo(index-1);
 next.onclick=()=>playVideo(index+1);
 rew.onclick=()=>video.currentTime-=10;
 ff.onclick=()=>video.currentTime+=10;
 playPause.onclick=()=>video.paused?video.play():video.pause();
 
-let currentVersion = localStorage.getItem("app_version") || "1.0.0";
-
-async function checkForUpdate() {
-  try {
-    const res = await fetch("https://derrickafricatz-wq.github.io/AFYA-CARE/version.json?time=" + Date.now());
-    const data = await res.json();
-
-    if (data.version !== currentVersion) {
-      showUpdateNotification(data.message, data.force);
-
-      currentVersion = data.version;
-      localStorage.setItem("app_version", data.version);
-    }
-  } catch (err) {
-    console.log("Update check failed");
-  }
-}
-
-// check every 1 minute
-setInterval(checkForUpdate, 60000);
-
-
-function showUpdateNotification(msg, force) {
-  const box = document.getElementById("updateBox");
-  const text = document.getElementById("updateText");
-
-  text.innerText = msg;
-  box.style.display = "block";
-
-  // 🔊 BEEP SOUND ALERT
-  const beep = new Audio("https://www.soundjay.com/buttons/sounds/button-3.mp3");
-  beep.play().catch(()=>{});
-
-  // 🔥 FORCE UPDATE (AUTO RELOAD)
-  if (force) {
-    setTimeout(() => {
-      location.reload();
-    }, 5000);
-  }
-}
-
-function applyUpdate() {
-  location.reload();
-}
-
 /* ================= KEYPAD ================= */
 const display=document.getElementById("display");
 const keypad=document.getElementById("keypad");
 
-openKeypad.onclick = () => { 
-  keypad.style.display = keypad.style.display==="none"?"block":"none";
-  setTimeout(()=>display.focus(),200);
-  announcementBox.style.display = "none";
-};
+openKeypad.onclick=()=>{keypad.style.display=keypad.style.display==="none"?"block":"none"; setTimeout(()=>display.focus(),200);};
 function pressKey(n){ display.value+=n; }
 function clearInput(){ display.value=""; }
 function submitLesson(){
@@ -748,29 +622,14 @@ function refreshLessons(){
 startAds();
 display.addEventListener("keypress",e=>{if(e.key==="Enter") submitLesson();});
 
-openAnnouncement.onclick = () => {
-  announcementBox.style.display =
-    announcementBox.style.display === "none" ? "block" : "none";
-};
-
 /* ================= HEALTHY CLASS ================= */
 
 let scrollInterval=null, scrollSpeed=1.8;
 window._inner=null, window._outer=null, window._lesson=null, window._topics=null;
 
-let speech = window.speechSynthesis;
-let isSpeaking = false;
-let currentLineIndex = 0;
-
-let lessonLines = [];
-let lineElements = [];
-
 let topicsExpanded = true;
 
-openHealth.onclick = () => { 
-  showHealthyClass();
-  announcementBox.style.display = "none";
-};
+openHealth.onclick=showHealthyClass;
 
 function showHealthyClass(){
   if(document.getElementById("healthyContainer")) return;
@@ -868,34 +727,6 @@ rotateBtn.onclick = () => {
 
 controls.appendChild(rotateBtn);
 
-const voiceBtn = document.createElement("button");
-voiceBtn.innerText = "🔊 VOICE";
-controls.appendChild(voiceBtn);
-
-voiceBtn.onclick = () => {
-
-  if (!isSpeaking) {
-    // ▶ START
-    isSpeaking = true;
-    voiceBtn.innerText = "⏸ STOP";
-
-    currentLineIndex = 0;
-    speech.cancel(); // reset
-
-    speakLessonLineByLine();
-
-  } else {
-    // ⏹ STOP
-    isSpeaking = false;
-    voiceBtn.innerText = "🔊 VOICE";
-
-    speech.cancel();
-    // remove highlight when stopped
-lineElements.forEach(el => el.style.background = "transparent");
-  }
-
-};
-
 const backBtn=document.createElement("button"); backBtn.innerText="BACK";
 backBtn.onclick=()=>{
   lesson.style.display="none";
@@ -973,10 +804,7 @@ function openTopic(key){
   _topics.style.display="none";
   _inner.innerHTML="";
 
-     lessonLines = [];
-lineElements = [];
-
-topic.lines.forEach((line, i)=>{
+  topic.lines.forEach(line=>{
     const div=document.createElement("div");
     div.style.padding="15px 0";
     div.style.fontSize="24px";
@@ -984,11 +812,6 @@ topic.lines.forEach((line, i)=>{
     div.style.cursor = "pointer";  // indicate it can be selected
 
     if(typeof line==="string") div.innerText=line;
-    
-    if(typeof line === "string"){
-    lessonLines.push(line);
-    lineElements.push(div);
-}
 
     if(typeof line==="object" && line.type==="image"){
       const img=document.createElement("img");
@@ -1007,47 +830,6 @@ topic.lines.forEach((line, i)=>{
 
   _inner.style.top=_outer.clientHeight+"px";
   startScrolling();
-}
-
-function speakLessonLineByLine() {
-
-  if (currentLineIndex >= lessonLines.length) {
-    isSpeaking = false;
-
-    // remove highlight when finished
-    lineElements.forEach(el => el.style.background = "transparent");
-    return;
-  }
-
-  const text = lessonLines[currentLineIndex];
-  const utter = new SpeechSynthesisUtterance(text);
-
-  // highlight current line
-  lineElements.forEach(el => el.style.background = "transparent");
-
-  if (lineElements[currentLineIndex]) {
-    lineElements[currentLineIndex].style.background = "#00ffff33";
-  }
-
-  // try get female voice
-  const voices = speech.getVoices();
-  const female = voices.find(v => 
-    v.name.toLowerCase().includes("female") ||
-    v.name.toLowerCase().includes("zira") ||
-    v.name.toLowerCase().includes("samantha")
-  );
-
-  if (female) utter.voice = female;
-
-  utter.rate = 0.9;
-  utter.pitch = 1;
-
-  utter.onend = () => {
-    currentLineIndex++;
-    if (isSpeaking) speakLessonLineByLine();
-  };
-
-  speech.speak(utter);
 }
 
 function startScrolling(){
@@ -1069,51 +851,6 @@ function toggleScroll(){
     scrollInterval=null;
   } else startScrolling();
 }
-
-function playAnnouncementLoop() {
-  // 🔥 prevent multiple timers
-  if (announceLoopTimer) {
-    clearTimeout(announceLoopTimer);
-    announceLoopTimer = null;
-  }
-
-  video.pause();
-
-  announcementAudio.currentTime = 0;
-  announcementAudio.play();
-
-  announcementAudio.onended = () => {
-    if (!isPlaying) return;
-
-    announceLoopTimer = setTimeout(() => {
-      playAnnouncementLoop();
-    }, LOOP_DELAY);
-  };
-}
-
-function stopAnnouncementLoop() {
-  announcementAudio.pause();
-  announcementAudio.currentTime = 0;
-
-  if (announceLoopTimer) {
-    clearTimeout(announceLoopTimer);
-    announceLoopTimer = null;
-  }
-
-  video.play();
-}
-
-announceBtn.onclick = () => {
-  if (!isPlaying) {
-    isPlaying = true;
-    announceBtn.innerText = "⏸ Pause Announcement";
-    playAnnouncementLoop();
-  } else {
-    isPlaying = false;
-    announceBtn.innerText = "🔊 Play Announcement";
-    stopAnnouncementLoop();
-  }
-};
 
 /* GESTURES */
 let startY=0,endY=0;
@@ -1138,13 +875,6 @@ document.addEventListener("touchend",(e)=>{
     smartToggle.style.transform="translateY(100px)";
     controls.classList.remove("show");
     keypad.style.display="none";
-    // 🔥 ADD THIS
-announcementBox.style.display = "none";
-
-// 🔥 STOP AUDIO
-stopAnnouncementLoop();
-isPlaying = false;
-announceBtn.innerText = "🔊 Play Announcement";
   }
 });
 
