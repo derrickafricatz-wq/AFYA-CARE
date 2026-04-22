@@ -813,6 +813,60 @@ backBtn.onclick=()=>{
 const playBtn=document.createElement("button"); playBtn.innerText="⏯ PLAY/PAUSE";
 playBtn.onclick=toggleScroll;
 
+const voiceBtn = document.createElement("button");
+voiceBtn.innerText = "🔊 VOICE";
+
+controls.appendChild(voiceBtn);
+
+let isSpeaking = false;
+let currentUtterance = null;
+
+voiceBtn.onclick = () => {
+    const text = window.currentTopicText;
+
+    if(!text){
+        alert("Open a lesson first");
+        return;
+    }
+
+    // STOP if already speaking
+    if(isSpeaking){
+        speechSynthesis.cancel();
+        isSpeaking = false;
+        voiceBtn.innerText = "🔊 VOICE";
+        return;
+    }
+
+    // START speaking
+    speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    const voices = speechSynthesis.getVoices();
+
+    let selectedVoice = voices.find(v => v.lang.includes("sw"))
+                      || voices[0];
+
+    utterance.voice = selectedVoice;
+
+    // 🔥 smoother, less robotic settings
+    utterance.rate = 0.85;   // slower = more natural
+    utterance.pitch = 1.05;  // slightly human tone
+    utterance.volume = 1;
+
+    utterance.onend = () => {
+        isSpeaking = false;
+        voiceBtn.innerText = "🔊 VOICE";
+    };
+
+    currentUtterance = utterance;
+
+    speechSynthesis.speak(utterance);
+
+    isSpeaking = true;
+    voiceBtn.innerText = "⏹ STOP";
+};
+
 const printBtn = document.createElement("button");
 printBtn.innerText = "🖨 PRINT";
 printBtn.onclick = () => {
