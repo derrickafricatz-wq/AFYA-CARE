@@ -19,9 +19,6 @@ hiv: {
 
     "📖 Matibabu",
     "Kutumia dawa za kudhibiti makali ya virusi vya ukimwi zinazo muwezesha mtu kuishi maisha marefu na yenye afya.",
-
-    "🌐 Vyanzo",
-    "Mamlaka za Afya"
   ]
 },
 
@@ -40,9 +37,6 @@ infectionSpread: {
 
     "📖 Kinga",
     "Osha mikono mara kwa mara, vaa barakoa wakati wa mlipuko, na epuka kugusana na wagonjwa.",
-
-    "🌐 Vyanzo",
-    "Mamlaka za Afya"
   ]
 },
 
@@ -59,9 +53,6 @@ vaccines: {
     "📖 Umuhimu",
     "Watoto na watu wazima wanahitaji chanjo kulingana na umri wao.",
     "Chanjo huzuia milipuko ya magonjwa kwenye jamii.",
-
-    "🌐 Vyanzo",
-    "Mamlaka za Afya"
   ]
 },
 
@@ -78,9 +69,6 @@ respiratory: {
     "📖 Kinga",
     "Vaa barakoa wakati wa mlipuko na epuka msongamano.",
     "Nawa mikono mara kwa mara na tumia sanitizer.",
-
-    "🌐 Vyanzo",
-    "Mamlaka za Afya"
   ]
 },
 
@@ -97,9 +85,6 @@ medication: {
     "Kumaliza dozi kamili ni muhimu kuzuia usugu wa dawa.",
     { type: "image", src: "https://i.imgur.com/kd0B9Dc.png" },
     "Hifadhi dawa vizuri ili zisipoteze ufanisi wake.",
-
-    "🌐 Vyanzo",
-    "Mamlaka za Afya"
   ]
 }
 
