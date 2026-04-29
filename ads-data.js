@@ -1,3 +1,2 @@
-const adImages=["https://i.imgur.com/Vq3ksCE.png",
-                "https://i.imgur.com/dFw0tik.png",
-                "https://i.imgur.com/ZFBIpe8.png"];
+const adImages=["https://i.imgur.com/vOXqx8x.png",
+                "https://i.imgur.com/X0bG0PE.png"];
