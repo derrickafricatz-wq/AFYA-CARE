@@ -1045,9 +1045,20 @@ document.addEventListener("touchend",(e)=>{
 });
 
 window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+
+  if (!splash) return;
+
+  // minimum display time
   setTimeout(() => {
-    document.getElementById("splash").style.display = "none";
-  }, 3000);
+    splash.style.opacity = "0";
+    splash.style.transition = "0.6s ease";
+
+    setTimeout(() => {
+      splash.remove(); // fully remove from DOM
+    }, 700);
+
+  }, 2500);
 });
 
 </script>
