@@ -354,6 +354,7 @@ Install App
 
 <script src="health-data.js"></script>
 <script src="lesson-data.js"></script>
+<script src="ads-data.js"></script>
 
 <video id="brandVideo" autoplay muted playsinline></video>
 
@@ -508,11 +509,11 @@ document.body.addEventListener("click", () => {
 },{once:true});
 
 /* ================= CLOCK ================= */
+
 const clockBox = document.getElementById("clockBox");
 setInterval(()=>clockBox.innerText=new Date().toLocaleTimeString(),1000);
 
 /* ================= ADS ================= */
-const adImages=["https://i.imgur.com/Vq3ksCE.png","https://i.imgur.com/dFw0tik.png","https://i.imgur.com/ZFBIpe8.png"];
 adImages.forEach(src=>{new Image().src=src;});
 let adIndex=0, adInterval, currentLesson=null;
 const lessonAds={1:["https://i.imgur.com/UPgPdWT.jpeg","https://i.imgur.com/HdKedqJ.jpeg"],
