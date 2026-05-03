@@ -797,20 +797,28 @@ const controls=document.createElement("div"); controls.id="healthyControls";
 let voiceEnabled = false;
 
 const voiceBtn = document.createElement("button");
-voiceBtn.innerText = "🎤 VOICE OFF";
 
-voiceBtn.style.background = "#ffcc00";
-voiceBtn.style.color = "black";
+// DEFAULT STATE → NONE
+voiceBtn.innerText = "🔇 NONE";
+voiceBtn.style.background = "#444";
+voiceBtn.style.color = "white";
 
 voiceBtn.onclick = () => {
     voiceEnabled = !voiceEnabled;
 
     if(voiceEnabled){
-        voiceBtn.innerText = "🎤 VOICE ON";
+        // TURN ON VOICE
+        voiceBtn.innerText = "🔊 VOICE OUT";
         voiceBtn.style.background = "#00ff99";
+        voiceBtn.style.color = "black";
     } else {
-        voiceBtn.innerText = "🎤 VOICE OFF";
-        voiceBtn.style.background = "#ffcc00";
+        // TURN OFF VOICE
+        voiceBtn.innerText = "🔇 NONE";
+        voiceBtn.style.background = "#444";
+        voiceBtn.style.color = "white";
+
+        // STOP ANY SPEAKING IMMEDIATELY
+        window.speechSynthesis.cancel();
     }
 };
 
@@ -911,8 +919,8 @@ c.appendChild(lesson);
     utter.lang = "sw-KE";
 
     // human tuning
-    utter.rate = 0.80;
-    utter.pitch = 0.65;
+    utter.rate = 0.79;
+    utter.pitch = 0.60;
     utter.volume =1;
 
     let voices = window.speechSynthesis.getVoices();
@@ -984,8 +992,9 @@ function openTopic(key){
     div.classList.toggle("marked");
     div.style.background = div.classList.contains("marked") ? "#00ffff33" : "transparent";
 
-    // 🔊 SPEAK ONLY HEALTH LESSON LINE
-    speakText(div.innerText || "");
+    if(voiceEnabled){
+        speakText(div.innerText || "");
+    }
 };
 
     _inner.appendChild(div);
