@@ -794,42 +794,6 @@ topBar.appendChild(exitBtn);
 
 const controls=document.createElement("div"); controls.id="healthyControls";
 
-let voicePlaying = false;
-
-const voiceBtn = document.createElement("button");
-
-voiceBtn.innerText = "🔊 PLAY";
-voiceBtn.style.background = "#00ffff";
-voiceBtn.style.color = "black";
-
-voiceBtn.onclick = () => {
-
-    // START READING
-    if(!voicePlaying){
-
-        voicePlaying = true;
-
-        voiceBtn.innerText = "🔇 STOP";
-        voiceBtn.style.background = "#ff4444";
-
-        readWholeLesson();
-
-    } else {
-
-        // STOP READING
-        voicePlaying = false;
-
-        voiceBtn.innerText = "🔊 PLAY";
-        voiceBtn.style.background = "#00ffff";
-
-        window.speechSynthesis.cancel();
-
-        startScrolling();
-    }
-};
-
-controls.appendChild(voiceBtn);
-
 let rotated = false;
 
 const rotateBtn = document.createElement("button");
@@ -913,57 +877,6 @@ c.appendChild(lesson);
   window._outer=outer;
   window._lesson=lesson;
   window._topics=topics;
-  
-  function readWholeLesson(){
-
-    if(!voicePlaying) return;
-
-    // GET ALL TEXT FROM CURRENT LESSON
-    const allText = Array.from(_inner.children)
-    .map(el => el.innerText?.trim() || "")
-    .filter(text => text.length > 0)
-    .join(". ");
-
-    if(!allText.trim()) return;
-
-    // STOP OLD SPEECH
-    window.speechSynthesis.cancel();
-
-    const utter = new SpeechSynthesisUtterance(allText);
-
-    utter.lang = "sw-KE";
-
-    // HUMAN VOICE SETTINGS
-    utter.rate = 1;
-    utter.pitch = 1;
-    utter.volume = 1;
-
-    let voices = window.speechSynthesis.getVoices();
-
-    const preferred =
-        voices.find(v => v.lang.includes("sw")) ||
-        voices.find(v => v.lang.includes("en-GB")) ||
-        voices.find(v => v.lang.includes("en-US")) ||
-        voices[0];
-
-    if(preferred){
-        utter.voice = preferred;
-    }
-
-    // WHEN FINISHED
-    utter.onend = () => {
-
-        voicePlaying = false;
-
-        voiceBtn.innerText = "🔊 PLAY";
-        voiceBtn.style.background = "#00ffff";
-
-        // RESUME SCROLL
-        startScrolling();
-    };
-
-    window.speechSynthesis.speak(utter);
-}
 
 function toggleTopics(toggleBtn){
   const buttons = _topics.querySelectorAll("#topicsList button");
