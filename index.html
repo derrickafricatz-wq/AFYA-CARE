@@ -794,31 +794,37 @@ topBar.appendChild(exitBtn);
 
 const controls=document.createElement("div"); controls.id="healthyControls";
 
-let voiceEnabled = false;
+let voicePlaying = false;
 
 const voiceBtn = document.createElement("button");
 
-// DEFAULT STATE → NONE
-voiceBtn.innerText = "🔇 NONE";
-voiceBtn.style.background = "#444";
-voiceBtn.style.color = "white";
+voiceBtn.innerText = "🔊 PLAY";
+voiceBtn.style.background = "#00ffff";
+voiceBtn.style.color = "black";
 
 voiceBtn.onclick = () => {
-    voiceEnabled = !voiceEnabled;
 
-    if(voiceEnabled){
-        // TURN ON VOICE
-        voiceBtn.innerText = "🔊 VOICE OUT";
-        voiceBtn.style.background = "#00ff99";
-        voiceBtn.style.color = "black";
+    // START READING
+    if(!voicePlaying){
+
+        voicePlaying = true;
+
+        voiceBtn.innerText = "🔇 STOP";
+        voiceBtn.style.background = "#ff4444";
+
+        readWholeLesson();
+
     } else {
-        // TURN OFF VOICE
-        voiceBtn.innerText = "🔇 NONE";
-        voiceBtn.style.background = "#444";
-        voiceBtn.style.color = "white";
 
-        // STOP ANY SPEAKING IMMEDIATELY
+        // STOP READING
+        voicePlaying = false;
+
+        voiceBtn.innerText = "🔊 PLAY";
+        voiceBtn.style.background = "#00ffff";
+
         window.speechSynthesis.cancel();
+
+        startScrolling();
     }
 };
 
@@ -908,20 +914,32 @@ c.appendChild(lesson);
   window._lesson=lesson;
   window._topics=topics;
   
-  function speakText(text){
-    if(!voiceEnabled) return;
+  function readWholeLesson(){
 
+    if(!voicePlaying) return;
+
+    // GET ALL TEXT FROM CURRENT LESSON
+    const allText = Array.from(_inner.children)
+    .map(el => el.innerText?.trim() || "")
+    .filter(text => text.length > 0)
+    .join(". ");
+
+    if(!allText.trim()) return;
+
+    // STOP AUTO SCROLL
+    clearInterval(scrollInterval);
+
+    // STOP OLD SPEECH
     window.speechSynthesis.cancel();
 
-    const utter = new SpeechSynthesisUtterance(text);
+    const utter = new SpeechSynthesisUtterance(allText);
 
-    // Swahili Kenya
     utter.lang = "sw-KE";
 
-    // human tuning
-    utter.rate =1;
-    utter.pitch =1;
-    utter.volume =1;
+    // HUMAN VOICE SETTINGS
+    utter.rate = 1;
+    utter.pitch = 1;
+    utter.volume = 1;
 
     let voices = window.speechSynthesis.getVoices();
 
@@ -935,12 +953,15 @@ c.appendChild(lesson);
         utter.voice = preferred;
     }
 
-    // ONLY affect HEALTH scroll (not main video)
-    utter.onstart = () => {
-        clearInterval(scrollInterval);
-    };
-
+    // WHEN FINISHED
     utter.onend = () => {
+
+        voicePlaying = false;
+
+        voiceBtn.innerText = "🔊 PLAY";
+        voiceBtn.style.background = "#00ffff";
+
+        // RESUME SCROLL
         startScrolling();
     };
 
@@ -992,9 +1013,6 @@ function openTopic(key){
     div.classList.toggle("marked");
     div.style.background = div.classList.contains("marked") ? "#00ffff33" : "transparent";
 
-    if(voiceEnabled){
-        speakText(div.innerText || "");
-    }
 };
 
     _inner.appendChild(div);
