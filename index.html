@@ -395,10 +395,8 @@ Install App
 </button>
 <div id="lessonLabel">powered by deka</div>
 
-<div id="adImage"><img id="adImg"></div>
-
 <div id="splash">
-  <img src="https://i.imgur.com/rwfLNNH.png" alt="PDPC License">
+  <img id="splashImg" src="">
 </div>
 
 <div id="scrollBanner">
@@ -982,20 +980,59 @@ document.addEventListener("touchend",(e)=>{
 });
 
 window.addEventListener("load", () => {
+
   const splash = document.getElementById("splash");
+  const splashImg = document.getElementById("splashImg");
 
-  if (!splash) return;
+  if (!splash || !splashImg) return;
 
-  // minimum display time
-  setTimeout(() => {
+  // SPLASH IMAGES
+  const splashes = [
+
+    "https://i.imgur.com/tSfaJYs.png",
+    "https://i.imgur.com/lIdDtHN.jpeg"
+
+  ];
+
+  let current = 0;
+
+  // SHOW FIRST SPLASH
+  splashImg.src = splashes[current];
+
+  function nextSplash() {
+
+    // FADE OUT
     splash.style.opacity = "0";
-    splash.style.transition = "0.6s ease";
+    splash.style.transition = "0.8s ease";
 
     setTimeout(() => {
-      splash.remove(); // fully remove from DOM
-    }, 700);
 
-  }, 2500);
+      current++;
+
+      // FINISH ALL SPLASHES
+      if (current >= splashes.length) {
+
+        splash.remove();
+        return;
+
+      }
+
+      // CHANGE IMAGE
+      splashImg.src = splashes[current];
+
+      // FADE IN
+      splash.style.opacity = "1";
+
+      // WAIT 30 SECONDS
+      setTimeout(nextSplash, 30000);
+
+    }, 800);
+
+  }
+
+  // FIRST SPLASH STAYS 30 SECONDS
+  setTimeout(nextSplash, 30000);
+
 });
 
 </script>
