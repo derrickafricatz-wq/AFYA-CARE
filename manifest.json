@@ -11,17 +11,15 @@
   "background_color": "#000000",
   "theme_color": "#00ffff",
 
-  "description": "Afya Care health learning platform",
-
   "icons": [
     {
-      "src": "https://i.imgur.com/nD82y6t.png",
+      "src": "https://i.imgur.com/gX7r3vf.jpeg",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://i.imgur.com/nD82y6t.png",
+      "src": "https://i.imgur.com/gX7r3vf.jpeg",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
