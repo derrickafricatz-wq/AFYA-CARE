@@ -375,7 +375,6 @@ Install App
 <script src="lesson-data.js"></script>
 <script src="ads-data.js"></script>
 <script src="special-ads.js"></script>
-<script src="splash.js"></script>
 
 <video id="brandVideo" autoplay muted playsinline></video>
 
@@ -398,8 +397,8 @@ Install App
 
 <div id="adImage"><img id="adImg"></div>
 
-<div id="splash" class="splash">
-  <img id="splashImg" src="" alt="Splash">
+<div id="splash">
+  <img src="https://i.imgur.com/yX0t3tg.jpeg" alt="PDPC License">
 </div>
 
 <div id="scrollBanner">
@@ -984,31 +983,19 @@ document.addEventListener("touchend",(e)=>{
 
 window.addEventListener("load", () => {
   const splash = document.getElementById("splash");
-  const splashImg = document.getElementById("splashImg");
 
-  let i = 0;
+  if (!splash) return;
 
-  function showNextSplash() {
-    if (i >= splashes.length) {
-      splash.remove(); // DONE → enter app
-      return;
-    }
-
-    splashImg.src = splashes[i];
-    splash.style.opacity = "1";
+  // minimum display time
+  setTimeout(() => {
+    splash.style.opacity = "0";
+    splash.style.transition = "0.6s ease";
 
     setTimeout(() => {
-      splash.style.opacity = "0";
+      splash.remove(); // fully remove from DOM
+    }, 700);
 
-      setTimeout(() => {
-        i++;
-        showNextSplash();
-      }, 600);
-
-    }, 2500);
-  }
-
-  showNextSplash();
+  }, 2500);
 });
 
 </script>
