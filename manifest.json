@@ -27,10 +27,16 @@
       "purpose": "any maskable"
     },
     {
-    "src": "https://i.imgur.com/tSfaJYs.png",
+    "src": "https://i.imgur.com/yX0t3tg.jpeg",
     "sizes": "1024x1024",
     "type": "image/png",
     "purpose": "any maskable"  
-  }
+  },
+    {
+    "src": "https://i.imgur.com/rwfLNNH.png",
+    "sizes": "1024x1024",
+    "type": "image/png",
+    "purpose": "any maskable"  
+    }
   ]
 }
