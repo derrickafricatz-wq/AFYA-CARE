@@ -687,12 +687,12 @@ function submitLesson(){
   if(lessons[v]){
     currentLesson=v; playlist=lessons[v]; index=0; playVideo(0); stopAds(); startLessonAds(v);
   }
-  display.value=""; keypad.style.display="none";
+  display.value="";
 }
 function refreshLessons(){
   currentLesson=null; playlist=[].concat(...Object.values(lessons)); index=0; playVideo(0);
   stopLessonAds(); stopAds(); adIndex=0; resetAdImage(); setTimeout(()=>startAds(),200);
-  display.value=""; keypad.style.display="none";
+  display.value="";
 }
 startAds();
 display.addEventListener("keypress",e=>{if(e.key==="Enter") submitLesson();});
