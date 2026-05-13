@@ -397,10 +397,6 @@ Install App
 
 <div id="adImage"><img id="adImg"></div>
 
-<div id="splash">
-  <img src="https://i.imgur.com/yX0t3tg.jpeg" alt="PDPC License">
-</div>
-
 <div id="scrollBanner">
   <div id="scrollText">
     <span class="dekaStyle">AFYA CARE</span> • Explore.  Treat.  Learn.
@@ -979,23 +975,6 @@ document.addEventListener("touchend",(e)=>{
     controls.classList.remove("show");
     keypad.style.display="none";
   }
-});
-
-window.addEventListener("load", () => {
-  const splash = document.getElementById("splash");
-
-  if (!splash) return;
-
-  // minimum display time
-  setTimeout(() => {
-    splash.style.opacity = "0";
-    splash.style.transition = "0.6s ease";
-
-    setTimeout(() => {
-      splash.remove(); // fully remove from DOM
-    }, 700);
-
-  }, 2500);
 });
 
 </script>
