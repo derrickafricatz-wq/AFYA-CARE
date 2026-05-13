@@ -414,37 +414,53 @@ Install App
 
 <div id="smartPanel">
   <button class="smart-item" id="openControls">🖱️ Controls</button>
-  <button class="smart-item" id="openKeypad">⌨️ Keyboard</button>
   <button class="smart-item" id="openHealth">📚 Health</button>
-</div>
-
-<div id="keypad">
-  <input id="display" type="number">
-  <div id="keys">
-    <button onclick="pressKey(1)">1</button>
-    <button onclick="pressKey(2)">2</button>
-    <button onclick="pressKey(3)">3</button>
-    <button onclick="pressKey(4)">4</button>
-    <button onclick="pressKey(5)">5</button>
-    <button onclick="pressKey(6)">6</button>
-    <button onclick="pressKey(7)">7</button>
-    <button onclick="pressKey(8)">8</button>
-    <button onclick="pressKey(9)">9</button>
-    <button onclick="clearInput()">C</button>
-    <button onclick="pressKey(0)">0</button>
-    <button onclick="submitLesson()">OK</button>
-    <button onclick="refreshLessons()">↻</button>
-  </div>
 </div>
 
 <div id="controls">
   <div id="controlGrid">
-    <button class="ctrl-btn" id="prev">⏮</button>
-    <button class="ctrl-btn" id="rew">⏪</button>
-    <button class="ctrl-btn" id="playPause">⏯</button>
-    <button class="ctrl-btn" id="next">⏭</button>
-    <button class="ctrl-btn" id="ff">⏩</button>
-  </div>
+
+  <!-- VIDEO CONTROLS -->
+  <button class="ctrl-btn" id="prev">⏮</button>
+  <button class="ctrl-btn" id="rew">⏪</button>
+  <button class="ctrl-btn" id="playPause">⏯</button>
+  <button class="ctrl-btn" id="next">⏭</button>
+  <button class="ctrl-btn" id="ff">⏩</button>
+
+  <!-- INPUT -->
+  <input id="display" type="number" placeholder="Lesson" 
+  style="
+    grid-column: span 5;
+    height:50px;
+    border:none;
+    border-radius:12px;
+    padding:10px;
+    font-size:20px;
+    text-align:center;
+  ">
+
+  <!-- KEYS -->
+  <button class="ctrl-btn" onclick="pressKey(1)">1</button>
+  <button class="ctrl-btn" onclick="pressKey(2)">2</button>
+  <button class="ctrl-btn" onclick="pressKey(3)">3</button>
+
+  <button class="ctrl-btn" onclick="pressKey(4)">4</button>
+  <button class="ctrl-btn" onclick="pressKey(5)">5</button>
+  <button class="ctrl-btn" onclick="pressKey(6)">6</button>
+
+  <button class="ctrl-btn" onclick="pressKey(7)">7</button>
+  <button class="ctrl-btn" onclick="pressKey(8)">8</button>
+  <button class="ctrl-btn" onclick="pressKey(9)">9</button>
+
+  <button class="ctrl-btn" onclick="clearInput()">C</button>
+  <button class="ctrl-btn" onclick="pressKey(0)">0</button>
+  <button class="ctrl-btn" onclick="submitLesson()">OK</button>
+
+  <button class="ctrl-btn" onclick="refreshLessons()" 
+  style="grid-column: span 3; width:100%; border-radius:15px;">
+    ↻ REFRESH
+  </button>
+
 </div>
 
 <div id="updateBox" style="
@@ -697,9 +713,7 @@ function applyUpdate() {
 
 /* ================= KEYPAD ================= */
 const display=document.getElementById("display");
-const keypad=document.getElementById("keypad");
 
-openKeypad.onclick=()=>{keypad.style.display=keypad.style.display==="none"?"block":"none"; setTimeout(()=>display.focus(),200);};
 function pressKey(n){ display.value+=n; }
 function clearInput(){ display.value=""; }
 function submitLesson(){
@@ -973,7 +987,6 @@ document.addEventListener("touchend",(e)=>{
     smartToggle.style.opacity="0";
     smartToggle.style.transform="translateY(100px)";
     controls.classList.remove("show");
-    keypad.style.display="none";
   }
 });
 
