@@ -182,33 +182,42 @@ html, body {
   z-index: 5;
 }
 
-/* CONTROLS */
 #controls {
   position: fixed;
   bottom: 140px;
-  left: 20px;
-  background: rgba(0,0,0,0.7);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 420px;
+  background: rgba(0,0,0,0.88);
   border-radius: 20px;
   opacity: 0;
   pointer-events: none;
-  z-index: 50; /* 🔥 higher than smartToggle */
+  z-index: 50;
+  max-height: 70vh;
+  overflow-y: auto;
 }
+
 #controls.show {
   opacity:1;
   pointer-events:auto;
 }
+
 #controlGrid {
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(3,1fr);
   gap:10px;
-  padding:10px;
+  padding:15px;
 }
+
 .ctrl-btn {
-  width:50px;
-  height:50px;
-  border-radius:50%;
+  width:100%;
+  height:55px;
+  border-radius:16px;
   background:#00ffff;
   border:none;
+  font-size:20px;
+  font-weight:bold;
 }
 
 /* KEYPAD */
