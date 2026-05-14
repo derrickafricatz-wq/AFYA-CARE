@@ -388,11 +388,11 @@ Install App
   <button class="smart-item" id="openHealth">
 
   <div id="healthMain">
-    🧠 LEARN DISEASES
+    📗LEARN DISEASES
   </div>
 
   <small>
-    READ ONLY • VISUAL LESSONS
+    TWENDE ZETU DARASANI
   </small>
 
 </button>
@@ -608,14 +608,10 @@ const smartPanel=document.getElementById("smartPanel");
 const healthMain = document.getElementById("healthMain");
 
 const healthHints = [
-  "🧠 LEARN DISEASES",
-  "🩺 SYMPTOMS GUIDE",
-  "💊 TREATMENT METHODS",
-  "🛡 PREVENTION TIPS",
-  "❤️ HEART HEALTH",
-  "🦷 DENTAL CARE",
-  "🧬 HIV AWARENESS",
-  "🦟 MALARIA CONTROL"
+  "LEARN DISEASES",
+  "SYMPTOMS GUIDE",
+  "TREATMENT METHODS",
+  "PREVENTION TIPS",
 ];
 
 let healthIndex = 0;
@@ -810,14 +806,6 @@ function showHealthyClass(){
   const topBar = document.createElement("div");
 topBar.style.display = "flex";
 topBar.style.gap = "10px";
-
-const infoText = document.createElement("div");
-infoText.innerText = "READ ONLY • FOLLOW VISUAL LESSONS";
-infoText.style.color = "#00ffff";
-infoText.style.fontSize = "12px";
-infoText.style.marginLeft = "10px";
-
-topBar.appendChild(infoText);
 
 // TOGGLE BUTTON
 const toggle = document.createElement("button");
