@@ -386,8 +386,15 @@ Install App
 <div id="smartPanel">
   <button class="smart-item" id="openControls">⌨ SYSTEM KEYPAD</button>
   <button class="smart-item" id="openHealth">
-  🧠 LEARNING CORE<br>
-  <small id="healthHint">LOADING...</small>
+
+  <div id="healthMain">
+    🧠 LEARN DISEASES
+  </div>
+
+  <small>
+    READ ONLY • VISUAL LESSONS
+  </small>
+
 </button>
 </div>
 
@@ -596,30 +603,56 @@ if ("serviceWorker" in navigator) {
 const smartToggle=document.getElementById("smartToggle");
 const smartPanel=document.getElementById("smartPanel");
 
-const healthHint = document.getElementById("healthHint");
+/* ================= LEARNING CORE ROTATION ================= */
+
+const healthMain = document.getElementById("healthMain");
 
 const healthHints = [
-  "LEARN DISEASES",
-  "SYMPTOMS GUIDE",
-  "TREATMENT METHODS",
-  "PREVENTION TIPS"
+  "🧠 LEARN DISEASES",
+  "🩺 SYMPTOMS GUIDE",
+  "💊 TREATMENT METHODS",
+  "🛡 PREVENTION TIPS",
+  "❤️ HEART HEALTH",
+  "🦷 DENTAL CARE",
+  "🧬 HIV AWARENESS",
+  "🦟 MALARIA CONTROL"
 ];
 
 let healthIndex = 0;
 
+// STYLE EFFECT
+healthMain.style.transition = "all 0.5s ease";
+healthMain.style.display = "block";
+
 function rotateHealthHints(){
-  if(!healthHint) return;
 
-  healthHint.innerText = healthHints[healthIndex];
+  if(!healthMain) return;
 
-  healthIndex++;
-  if(healthIndex >= healthHints.length){
-    healthIndex = 0;
-  }
+  // FADE OUT
+  healthMain.style.opacity = "0";
+  healthMain.style.transform = "translateY(10px)";
+
+  setTimeout(()=>{
+
+    // CHANGE TEXT
+    healthMain.innerText = healthHints[healthIndex];
+
+    // FADE IN
+    healthMain.style.opacity = "1";
+    healthMain.style.transform = "translateY(0)";
+
+    healthIndex++;
+
+    if(healthIndex >= healthHints.length){
+      healthIndex = 0;
+    }
+
+  }, 400);
 }
 
 rotateHealthHints();
-setInterval(rotateHealthHints, 2000);
+
+setInterval(rotateHealthHints, 2200);
 
 let panelTimer=null;
 
