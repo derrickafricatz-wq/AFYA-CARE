@@ -395,7 +395,10 @@ Install App
 <div></div>
 
   <!-- INPUT -->
-  <input id="display" type="number" placeholder="Lesson" 
+  <input 
+  id="display" 
+  type="number" 
+  placeholder=""
   style="
     grid-column: span 5;
     height:50px;
@@ -404,7 +407,9 @@ Install App
     padding:10px;
     font-size:20px;
     text-align:center;
-  ">
+    background:#111;
+  "
+>
 
   <!-- KEYS -->
   <button class="ctrl-btn" onclick="pressKey(1)">1</button>
@@ -674,6 +679,32 @@ function applyUpdate() {
 
 /* ================= KEYPAD ================= */
 const display=document.getElementById("display");
+const lessonHints = [
+  "1 • Dental Lesson",
+  "2 • Cholera Lesson",
+  "3 • HIV Lesson",
+  "4 • Malaria Lesson",
+  "5 • First Aid Lesson"
+];
+
+let hintIndex = 0;
+function rotateLessonHints(){
+
+  // Stop hints while user is typing
+  if(display.value !== "") return;
+
+  display.placeholder = lessonHints[hintIndex];
+
+  hintIndex++;
+
+  if(hintIndex >= lessonHints.length){
+    hintIndex = 0;
+  }
+}
+
+rotateLessonHints();
+
+setInterval(rotateLessonHints, 2000);
 
 function pressKey(n){ display.value+=n; }
 function clearInput(){ display.value=""; }
