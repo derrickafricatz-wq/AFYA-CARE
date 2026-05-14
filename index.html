@@ -43,6 +43,13 @@ html, body {
   z-index: 10;
 }
 
+#healthHint{
+  color:#00ffff;
+  font-size:11px;
+  letter-spacing:1px;
+  opacity:0.9;
+}
+
 /* ADS */
 #adImage {
   position: fixed;
@@ -377,8 +384,11 @@ Install App
 </button>
 
 <div id="smartPanel">
-  <button class="smart-item" id="openControls">🖱️ Controls</button>
-  <button class="smart-item" id="openHealth">📚 Health</button>
+  <button class="smart-item" id="openControls">⌨ SYSTEM KEYPAD</button>
+  <button class="smart-item" id="openHealth">
+  🧠 LEARNING CORE<br>
+  <small id="healthHint">LOADING...</small>
+</button>
 </div>
 
 <div id="controls">
@@ -586,6 +596,31 @@ if ("serviceWorker" in navigator) {
 const smartToggle=document.getElementById("smartToggle");
 const smartPanel=document.getElementById("smartPanel");
 
+const healthHint = document.getElementById("healthHint");
+
+const healthHints = [
+  "LEARN DISEASES",
+  "SYMPTOMS GUIDE",
+  "TREATMENT METHODS",
+  "PREVENTION TIPS"
+];
+
+let healthIndex = 0;
+
+function rotateHealthHints(){
+  if(!healthHint) return;
+
+  healthHint.innerText = healthHints[healthIndex];
+
+  healthIndex++;
+  if(healthIndex >= healthHints.length){
+    healthIndex = 0;
+  }
+}
+
+rotateHealthHints();
+setInterval(rotateHealthHints, 2000);
+
 let panelTimer=null;
 
 function showPanel(){
@@ -742,6 +777,14 @@ function showHealthyClass(){
   const topBar = document.createElement("div");
 topBar.style.display = "flex";
 topBar.style.gap = "10px";
+
+const infoText = document.createElement("div");
+infoText.innerText = "READ ONLY • FOLLOW VISUAL LESSONS";
+infoText.style.color = "#00ffff";
+infoText.style.fontSize = "12px";
+infoText.style.marginLeft = "10px";
+
+topBar.appendChild(infoText);
 
 // TOGGLE BUTTON
 const toggle = document.createElement("button");
