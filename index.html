@@ -599,7 +599,7 @@ activateBtn.onclick = () => {
   const days = activationCodes[enteredCode];
 
   const expiry =
-    Date.now() + (days * 24 * 60 * 60 * 1000);
+  Date.now() + (2 * 60 * 1000);
 
   /* SAVE */
   localStorage.setItem("sub_expiry", expiry);
