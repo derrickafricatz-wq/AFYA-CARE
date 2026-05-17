@@ -343,32 +343,16 @@ padding:20px;
 <strong>+255 742 097 868</strong>
 </div>
 
-<input 
-  id="codeInput"
-  placeholder="ENTER SUBSCRIPTION CODE"
-  style="
-    padding:12px;
-    font-size:18px;
-    border-radius:10px;
-    border:none;
-    text-align:center;
-    margin-top:10px;
-"
->
-
-<button id="activateBtn" style="
-  margin-top:10px;
-  padding:12px 20px;
-  border:none;
-  border-radius:10px;
-  background:#00ffff;
-  color:black;
-  font-size:18px;
+<button onclick="fakePay()" style="
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#00ffff;
+color:black;
+font-size:18px;
 ">
-ACTIVATE
+I HAVE PAID
 </button>
-
-<div id="codeMsg" style="margin-top:10px;"></div>
 
 <div id="countdown" style="margin-top:15px;"></div>
 
@@ -539,47 +523,22 @@ Install App
 
 const SUB_TIME = 3 * 60 * 1000; // 3 minutes
 
-const activationCodes = {
-  "AFYA123": 30,
-  "AFYA999": 60,
-  "VIP2026": 1440,
-  "TRIAL2": 2   // 2 minutes
-};
+function generateToken(){
+  return "AFYA-" + Math.random().toString(36).substring(2,10) + "-" + Date.now();
+}
 
-document.getElementById("activateBtn").onclick = () => {
+function fakePay(){
+  const token = generateToken();
+  const expiry = Date.now() + SUB_TIME;
 
-  const enteredCode =
-    document.getElementById("codeInput").value.trim().toUpperCase();
-
-  const codeMsg = document.getElementById("codeMsg");
-
-  if(!activationCodes[enteredCode]){
-    codeMsg.innerText = "INVALID CODE";
-    return;
-  }
-
-  const usedCodes =
-    JSON.parse(localStorage.getItem("used_codes") || "[]");
-
-  if(usedCodes.includes(enteredCode)){
-    codeMsg.innerText = "CODE ALREADY USED";
-    return;
-  }
-
-  const minutes = activationCodes[enteredCode];
-  const expiry = Date.now() + minutes * 60 * 1000;
-
+  localStorage.setItem("sub_token", token);
   localStorage.setItem("sub_expiry", expiry);
-  localStorage.setItem("sub_code", enteredCode);
-
-  usedCodes.push(enteredCode);
-  localStorage.setItem("used_codes", JSON.stringify(usedCodes));
 
   document.getElementById("subGate").style.display = "none";
 
-  checkSubscription();
   startCountdown();
-};
+  checkSubscription();
+}
 
 /* COUNTDOWN */
 let subTimer;
