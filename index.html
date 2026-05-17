@@ -343,36 +343,32 @@ padding:20px;
 <strong>+255 742 097 868</strong>
 </div>
 
-<input id="codeInput" type="text" placeholder="ENTER ACTIVATION CODE"
-style="
-padding:14px;
-width:260px;
-border:none;
-border-radius:10px;
-font-size:18px;
-text-align:center;
-margin-top:15px;
-background:#111;
-color:#00ffff;
-">
+<input 
+  id="codeInput"
+  placeholder="ENTER SUBSCRIPTION CODE"
+  style="
+    padding:12px;
+    font-size:18px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+    margin-top:10px;
+"
+>
 
 <button id="activateBtn" style="
-margin-top:15px;
-padding:12px 20px;
-border:none;
-border-radius:10px;
-background:#00ffff;
-color:black;
-font-size:18px;
+  margin-top:10px;
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  background:#00ffff;
+  color:black;
+  font-size:18px;
 ">
-ACTIVATE SYSTEM
+ACTIVATE
 </button>
 
-<div id="codeMsg" style="
-margin-top:15px;
-font-size:15px;
-color:#00ffff;
-"></div>
+<div id="codeMsg" style="margin-top:10px;"></div>
 
 <div id="countdown" style="margin-top:15px;"></div>
 
@@ -539,267 +535,107 @@ Install App
 </div>
 
 <script>
-
-/* ================= HARD SUBSCRIPTION LOCK ================= */
-
-function isExpired() {
-  const expiry = localStorage.getItem("sub_expiry");
-  if (!expiry) return true;
-  return Date.now() > Number(expiry);
-}
-
-function enforceLock() {
-  if (isExpired()) {
-    document.body.innerHTML = `
-      <div style="
-        position:fixed;
-        inset:0;
-        background:black;
-        color:#00ffff;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        font-family:Arial;
-        text-align:center;
-      ">
-        <h1>ACCESS LOCKED</h1>
-        <p>Your subscription has expired</p>
-      </div>
-    `;
-    throw new Error("APP LOCKED");
-  }
-}
-
-if (localStorage.getItem("sub_expiry")) {
-  enforceLock();
-}
-
 /* ================= SUBSCRIPTION SYSTEM ================= */
 
-/* YOUR ACTIVATION CODES */
+const SUB_TIME = 3 * 60 * 1000; // 3 minutes
+
 const activationCodes = {
-
-  "AFYA-7K2P-9XQ1": 2,
-  "AFYA-L8M4-ZT92": 2,
-  "AFYA-QW77-PLK9": 2,
-  "AFYA-X1V8-NM44": 2,
-  "AFYA-DEKA-2026": 2,
-
-  "AFYA-HEALTH-88": 2,
-  "AFYA-MEDIC-55": 2,
-  "AFYA-TREAT-11": 2,
-  "AFYA-CARE-77": 2,
-  "AFYA-SYSTEM-99": 2
-
+  "AFYA123": 30,   // 30 minutes
+  "AFYA999": 60,   // 1 hour
+  "VIP2026": 1440  // 24 hours
+  "TRIAL2": 2   // 2 minutes
 };
 
-let isLocked = false;
-
-/* BUTTON */
-const activateBtn = document.getElementById("activateBtn");
-
-/* ACTIVATE */
-activateBtn.onclick = () => {
+document.getElementById("activateBtn").onclick = () => {
 
   const enteredCode =
-    document.getElementById("codeInput")
-    .value
-    .trim()
-    .toUpperCase();
+    document.getElementById("codeInput").value.trim().toUpperCase();
 
   const codeMsg = document.getElementById("codeMsg");
 
-  /* EMPTY */
-  if(enteredCode === ""){
-    codeMsg.innerText = "ENTER ACTIVATION CODE";
-    return;
-  }
-
-  /* INVALID */
   if(!activationCodes[enteredCode]){
     codeMsg.innerText = "INVALID CODE";
     return;
   }
 
-  /* CHECK USED */
   const usedCodes =
     JSON.parse(localStorage.getItem("used_codes") || "[]");
 
   if(usedCodes.includes(enteredCode)){
-    codeMsg.innerText =
-      "CODE EXPIRED • REQUEST A NEW ONE";
+    codeMsg.innerText = "CODE ALREADY USED";
     return;
   }
 
-  /* SUB TIME */
- const minutes = activationCodes[enteredCode];
+  const minutes = activationCodes[enteredCode];
+  const expiry = Date.now() + minutes * 60 * 1000;
 
-const expiry =
-  Date.now() + (minutes * 60 * 1000);
-
-  /* SAVE */
   localStorage.setItem("sub_expiry", expiry);
   localStorage.setItem("sub_code", enteredCode);
-  
-  /* SMART DEVICE + HOSPITAL LOCK */
 
-const hospitalID =
-  "MOUNT-MERU-HOSPITAL";
-
-/* CREATE DEVICE ID */
-let deviceID =
-  localStorage.getItem("device_id");
-
-if(!deviceID){
-
-  deviceID =
-    "AFYA-" +
-    Math.random()
-    .toString(36)
-    .substring(2,10)
-    .toUpperCase();
-
-  localStorage.setItem(
-    "device_id",
-    deviceID
-  );
-}
-
-/* SAVE HOSPITAL */
-localStorage.setItem(
-  "hospital_id",
-  hospitalID
-);
-
-  /* MARK CODE USED */
   usedCodes.push(enteredCode);
+  localStorage.setItem("used_codes", JSON.stringify(usedCodes));
 
-  localStorage.setItem(
-    "used_codes",
-    JSON.stringify(usedCodes)
-  );
+  document.getElementById("subGate").style.display = "none";
 
-  /* OPEN SYSTEM */
-  // hide lock screen
-document.getElementById("subGate").style.display = "none";
-
-// force immediate check once
-checkSubscription();
-
-// start continuous checking
-startSubscriptionCheck();
-
+  checkSubscription();
+  startCountdown();
 };
 
-/* CHECK SUBSCRIPTION */
-function startSubscriptionCheck(){
+/* COUNTDOWN */
+let subTimer;
 
-  // 🚨 FIRST CHECK IMMEDIATELY
-  checkSubscription();
+function startCountdown(){
+  clearInterval(subTimer);
 
-  // 🚨 IF EXPIRED → STOP EVERYTHING IMMEDIATELY
-  if (isExpired()) {
-  lockSystem();
-  return;
-}
+  subTimer = setInterval(()=>{
+    let expiry = localStorage.getItem("sub_expiry");
 
-  // 🔁 CONTINUE MONITORING
-  window._subInterval = setInterval(() => {
-
-    if (isExpired()) {
-  lockSystem();
-    } else {
-      checkSubscription();
+    if(!expiry){
+      lockApp();
+      return;
     }
 
-  }, 1000);
+    let remaining = expiry - Date.now();
+
+    if(remaining <= 0){
+      lockApp();
+      return;
+    }
+
+    document.getElementById("countdown").innerText =
+      "Session expires in: " + Math.floor(remaining/1000) + "s";
+
+  },1000);
 }
 
+/* LOCK SYSTEM */
+function lockApp(){
+  localStorage.removeItem("sub_token");
+  localStorage.removeItem("sub_expiry");
+
+  document.getElementById("subGate").style.display = "flex";
+  document.getElementById("countdown").innerText = "SESSION EXPIRED";
+}
+
+/* CHECK ON LOAD */
 function checkSubscription(){
+  let expiry = localStorage.getItem("sub_expiry");
 
-  const expiry =
-    localStorage.getItem("sub_expiry");
-    
-    const hospital =
-  localStorage.getItem("hospital_id");
-
-const deviceID =
-  localStorage.getItem("device_id");
-
-if(
-  !expiry ||
-  !hospital ||
-  !deviceID
-){
-
-  lockSystem();
-
-  return;
-}
-
-  const remaining =
-    Number(expiry) - Date.now();
-
-  /* EXPIRED */
-  if(remaining <= 0){
-    lockSystem();
+  if(!expiry){
+    lockApp();
     return;
   }
 
-  /* HIDE LOCK */
-  document.getElementById("subGate").style.display = "none";
-
-  /* COUNTDOWN */
-  const days =
-    Math.floor(
-      remaining / (1000 * 60 * 60 * 24)
-    );
-
-  const hours =
-    Math.floor(
-      (remaining % (1000 * 60 * 60 * 24))
-      / (1000 * 60 * 60)
-    );
-
-  const mins =
-    Math.floor(
-      (remaining % (1000 * 60 * 60))
-      / (1000 * 60)
-    );
-
-  document.getElementById("countdown").innerText =
-    "SUBSCRIPTION: " +
-    days + "D " +
-    hours + "H " +
-    mins + "M LEFT";
-
-}
-
-function lockSystem(){
-
-  // SHOW LOCK SCREEN
-  document.getElementById("subGate").style.display = "flex";
-
-  document.getElementById("codeMsg").innerText =
-    "SUBSCRIPTION EXPIRED";
-
-  // 🚫 STOP VIDEO
-  if (video) {
-    video.pause();
-    video.src = "";
+  if(Date.now() > expiry){
+    lockApp();
+  } else {
+    document.getElementById("subGate").style.display = "none";
+    startCountdown();
   }
-
-  // 🚫 STOP ADS
-  if (typeof stopAds === "function") stopAds();
-  if (typeof stopLessonAds === "function") stopLessonAds();
-
-  // 🚫 STOP INTERVAL CHECKS BY FREEZING CHECKER
-  clearInterval(window._subInterval);
 }
 
-/* AUTO START */
-startSubscriptionCheck();
+/* AUTO RUN WHEN APP STARTS */
+checkSubscription();
 
 /* ================= FULLSCREEN KIOSK ================= */
 function goFullScreen(){
