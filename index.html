@@ -347,7 +347,6 @@ Install App
 <script src="ads-data.js"></script>
 <script src="special-ads.js"></script>
 <script src="hints.js"></script>
-<script src="codes.js"></script>
 
 <video id="brandVideo" autoplay muted playsinline></video>
 
@@ -416,7 +415,7 @@ Install App
   <!-- INPUT -->
   <input 
   id="display" 
-  type="text" 
+  type="number" 
   placeholder=""
   style="
     grid-column: span 5;
@@ -563,6 +562,11 @@ if(!isSubscribed()){
 }
 
 /* ================= STEP 4: ACTIVATION LOGIC ================= */
+
+const validCodes = [
+  "DEK-0001","DEK-0002","DEK-0003","DEK-0004","DEK-0005",
+  "DEK-0006","DEK-0007","DEK-0008","DEK-0009","DEK-0010"
+];
 
 function activateSubscription(){
 
