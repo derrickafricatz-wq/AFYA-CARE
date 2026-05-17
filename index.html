@@ -318,6 +318,46 @@ html, body {
 
 <body>
 
+<!-- SUBSCRIPTION LOCK SCREEN -->
+<div id="subGate" style="
+position:fixed;
+inset:0;
+background:black;
+color:#00ffff;
+z-index:9999;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+font-family:'Russo One';
+text-align:center;
+padding:20px;
+">
+
+<h2>AFYA CARE ACCESS</h2>
+
+<p>Unlock system with subscription</p>
+
+<div style="margin:10px 0;font-size:18px;">
+📱 PAY VIA M-PESA<br>
+<strong>+255 742 097 868</strong>
+</div>
+
+<button onclick="fakePay()" style="
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#00ffff;
+color:black;
+font-size:18px;
+">
+I HAVE PAID
+</button>
+
+<div id="countdown" style="margin-top:15px;"></div>
+
+</div>
+
 <button id="installBtn" style="
   position:fixed;
   bottom:20px;
@@ -479,127 +519,82 @@ Install App
 </div>
 
 <script>
-/* ================= STEP 1: SUBSCRIPTION CHECK ================= */
+/* ================= SUBSCRIPTION SYSTEM ================= */
 
-const SUB_KEY = "afya_sub_expiry";
+const SUB_TIME = 3 * 60 * 1000; // 3 minutes
 
-function isSubscribed(){
+function generateToken(){
+  return "AFYA-" + Math.random().toString(36).substring(2,10) + "-" + Date.now();
+}
 
-  const expiry = localStorage.getItem(SUB_KEY);
+function fakePay(){
+  const token = generateToken();
+  const expiry = Date.now() + SUB_TIME;
+
+  localStorage.setItem("sub_token", token);
+  localStorage.setItem("sub_expiry", expiry);
+
+  document.getElementById("subGate").style.display = "none";
+
+  startCountdown();
+  checkSubscription();
+}
+
+/* COUNTDOWN */
+let subTimer;
+
+function startCountdown(){
+  clearInterval(subTimer);
+
+  subTimer = setInterval(()=>{
+    let expiry = localStorage.getItem("sub_expiry");
+
+    if(!expiry){
+      lockApp();
+      return;
+    }
+
+    let remaining = expiry - Date.now();
+
+    if(remaining <= 0){
+      lockApp();
+      return;
+    }
+
+    document.getElementById("countdown").innerText =
+      "Session expires in: " + Math.floor(remaining/1000) + "s";
+
+  },1000);
+}
+
+/* LOCK SYSTEM */
+function lockApp(){
+  localStorage.removeItem("sub_token");
+  localStorage.removeItem("sub_expiry");
+
+  document.getElementById("subGate").style.display = "flex";
+  document.getElementById("countdown").innerText = "SESSION EXPIRED";
+}
+
+/* CHECK ON LOAD */
+function checkSubscription(){
+  let expiry = localStorage.getItem("sub_expiry");
 
   if(!expiry){
-    return false;
-  }
-
-  if(Date.now() > parseInt(expiry)){
-    return false;
-  }
-
-  return true;
-}
-
-/* ================= STEP 2: BLOCK SYSTEM ================= */
-
-function showLockScreen(){
-
-  const box = document.createElement("div");
-
-  box.id = "lockScreen";
-
-  box.style = `
-    position:fixed;
-    inset:0;
-    background:black;
-    color:#00ffff;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    padding:20px;
-    font-family:Arial;
-    z-index:999999;
-  `;
-
-  box.innerHTML = `
-    <h1>🔒 AFYA CARE LOCKED</h1>
-    <p>Subscription required to continue</p>
-
-    <h2>PAY 5000 TSH</h2>
-    <p>+255 742097868</p>
-
-    <p>Enter activation code below:</p>
-
-<input id="subInput" placeholder="Enter code" style="
-  padding:12px;
-  font-size:18px;
-  text-align:center;
-  margin-top:10px;
-  border-radius:8px;
-  border:none;
-"/>
-
-<button onclick="activateSubscription()" style="
-  margin-top:10px;
-  padding:12px;
-  background:#00ffff;
-  border:none;
-  font-weight:bold;
-  border-radius:8px;
-">
-  ACTIVATE
-</button>
-
-<div id="subMsg" style="margin-top:10px;"></div>
-  `;
-
-  document.body.appendChild(box);
-}
-
-/* RUN CHECK IMMEDIATELY */
-if(!isSubscribed()){
-  showLockScreen();
-}
-
-  /* LIVE BLOCK CHECK (IMPORTANT FIX) */
-setInterval(() => {
-  if (!isSubscribed()) {
-
-    // avoid duplicate screens
-    if (!document.getElementById("lockScreen")) {
-      showLockScreen();
-    }
-  }
-}, 1000);
-
-/* ================= STEP 4: ACTIVATION LOGIC ================= */
-
-const validCodes = [
-  "DEK-0001","DEK-0002","DEK-0003","DEK-0004","DEK-0005",
-  "DEK-0006","DEK-0007","DEK-0008","DEK-0009","DEK-0010"
-];
-
-function activateSubscription(){
-
-  const code = document.getElementById("subInput").value.trim();
-  const msg = document.getElementById("subMsg");
-
-  if(!validCodes.includes(code)){
-    msg.innerText = "❌ Invalid code. Contact admin.";
+    lockApp();
     return;
   }
 
-  // 30 days subscription
-  const expiry = Date.now() + (3 * 60 * 1000);
-
-  localStorage.setItem("afya_sub_expiry", expiry);
-
-  msg.innerText = "✅ Activated successfully!";
-
-  setTimeout(()=>{
-    location.reload();
-  }, 1200);
+  if(Date.now() > expiry){
+    lockApp();
+  } else {
+    document.getElementById("subGate").style.display = "none";
+    startCountdown();
+  }
 }
+
+/* AUTO RUN WHEN APP STARTS */
+checkSubscription();
 
 /* ================= FULLSCREEN KIOSK ================= */
 function goFullScreen(){
