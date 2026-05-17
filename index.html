@@ -561,6 +561,17 @@ if(!isSubscribed()){
   showLockScreen();
 }
 
+  /* LIVE BLOCK CHECK (IMPORTANT FIX) */
+setInterval(() => {
+  if (!isSubscribed()) {
+
+    // avoid duplicate screens
+    if (!document.getElementById("lockScreen")) {
+      showLockScreen();
+    }
+  }
+}, 1000);
+
 /* ================= STEP 4: ACTIVATION LOGIC ================= */
 
 const validCodes = [
